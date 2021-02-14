@@ -4,6 +4,8 @@ require (
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/eminetto/mongo-migrate v0.1.4
+	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/go-chi/cors v1.0.0
 	github.com/go-chi/docgen v1.0.5
@@ -26,6 +28,8 @@ require (
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/vanng822/css v0.1.0 // indirect
 	github.com/vanng822/go-premailer v0.0.0-20191214114701-be27abe028fe
+	go.mongodb.org/mongo-driver v1.4.1
+	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce
 	mellium.im/sasl v0.2.1 // indirect
 )
 

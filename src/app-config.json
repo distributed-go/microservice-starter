@@ -4,6 +4,10 @@
         "port": 3000,
         "enable_cors": true
     },
+    "db": {
+        "host": "mongodb://localhost:27017",
+        "database": "recruiter_db"
+    },
     "jwt": {
         "auth_jwt_expiry" : "15m",
         "auth_jwt_refresh_expiry":"1h",

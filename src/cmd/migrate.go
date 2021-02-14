@@ -1,32 +1,33 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strings"
+	"time"
 
-	"github.com/jobbox-tech/recruiter-api/database/migrate"
+	"github.com/spf13/viper"
+
+	migrate "github.com/eminetto/mongo-migrate"
+	"github.com/globalsign/mgo"
+	_ "github.com/jobbox-tech/recruiter-api/migrations" // import migrations
+	"github.com/spf13/cobra"
 )
 
-var reset bool
+var (
+	action  string
+	message string
+)
 
 // migrateCmd represents the migrate command
 var migrateCmd = &cobra.Command{
 	Use:   "migrate",
-	Short: "use go-pg migration tool",
-	Long:  `migrate uses go-pg migration tool under the hood supporting the same commands and an additional reset command`,
+	Short: "use migration tool",
+	Long:  `migrate uses mongo-migrate migration tool under the hood supporting the same commands and an additional reset command`,
 	Run: func(cmd *cobra.Command, args []string) {
-		argsMig := args[:0]
-		for _, arg := range args {
-			switch arg {
-			case "migrate", "--db_debug", "--reset":
-			default:
-				argsMig = append(argsMig, arg)
-			}
-		}
-
-		if reset {
-			migrate.Reset()
-		}
-		migrate.Migrate(argsMig)
+		run()
 	},
 }
 
@@ -42,5 +43,55 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// migrateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	migrateCmd.Flags().BoolVar(&reset, "reset", false, "migrate down to version 0 then up to latest. WARNING: all data will be lost!")
+	migrateCmd.Flags().StringVar(&action, "action", "", "Creates a new migration into the migrations folder")
+	migrateCmd.Flags().StringVar(&message, "message", "", "Apply migrations up")
+}
+
+func run() {
+	session, err := mgo.Dial(viper.GetString("db.host"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	fmt.Println("HDB", viper.GetString("db.host"), viper.GetString("db.database"))
+
+	defer session.Close()
+	db := session.DB(viper.GetString("db.database"))
+	migrate.SetDatabase(db)
+	migrate.SetMigrationsCollection("migrations")
+	migrate.SetLogger(log.New(os.Stdout, "INFO: ", 0))
+
+	switch action {
+	case "new":
+		if len(message) == 0 {
+			log.Fatal("Provide message for new migration")
+		}
+		fName := fmt.Sprintf("./migrations/%s_%s.go", time.Now().Format("20060102150405"), strings.ReplaceAll(message, " ", "_"))
+		from, err := os.Open("./migrations/template.go")
+		if err != nil {
+			log.Fatal("Migration template not found")
+		}
+		defer from.Close()
+
+		to, err := os.OpenFile(fName, os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		defer to.Close()
+
+		_, err = io.Copy(to, from)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		log.Printf("New migration created: %s\n", fName)
+	case "up":
+		err = migrate.Up(migrate.AllAvailable)
+	case "down":
+		err = migrate.Down(migrate.AllAvailable)
+	default:
+		log.Fatal("Invalid operation")
+	}
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
