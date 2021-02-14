@@ -33,9 +33,9 @@ type LoginTokenAuth struct {
 func NewLoginTokenAuth() (*LoginTokenAuth, error) {
 	a := &LoginTokenAuth{
 		token:            make(map[string]LoginToken),
-		loginURL:         viper.GetString("auth_login_url"),
-		loginTokenLength: viper.GetInt("auth_login_token_length"),
-		loginTokenExpiry: viper.GetDuration("auth_login_token_expiry"),
+		loginURL:         viper.GetString("jwt.auth_login_url"),
+		loginTokenLength: viper.GetInt("jwt.auth_login_token_length"),
+		loginTokenExpiry: viper.GetDuration("jwt.auth_login_token_expiry"),
 	}
 	return a, nil
 }

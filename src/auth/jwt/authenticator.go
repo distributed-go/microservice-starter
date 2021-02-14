@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
 
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 type ctxKey int

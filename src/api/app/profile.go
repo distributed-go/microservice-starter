@@ -5,8 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/dhax/go-base/auth/jwt"
-	"github.com/dhax/go-base/models"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/models"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	validation "github.com/go-ozzo/ozzo-validation"

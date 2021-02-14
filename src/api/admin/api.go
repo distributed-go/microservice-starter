@@ -9,9 +9,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-pg/pg"
 
-	"github.com/jobbox-tech/recruiter-ui/auth/authorize"
-	"github.com/jobbox-tech/recruiter-ui/database"
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/auth/authorize"
+	"github.com/jobbox-tech/recruiter-api/database"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 const (

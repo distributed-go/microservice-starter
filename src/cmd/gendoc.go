@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/go-chi/docgen"
-	"github.com/jobbox-tech/recruiter-ui/api"
+	"github.com/jobbox-tech/recruiter-api/api"
 	"github.com/spf13/cobra"
 )
 
@@ -50,7 +50,7 @@ func genRoutesDoc() {
 	api, _ := api.New(false)
 	fmt.Print("generating routes markdown file: ")
 	md := docgen.MarkdownRoutesDoc(api, docgen.MarkdownOpts{
-		ProjectPath: "github.com/jobbox-tech/recruiter-ui",
+		ProjectPath: "github.com/jobbox-tech/recruiter-api",
 		Intro:       "GoBase REST API.",
 	})
 	if err := ioutil.WriteFile("routes.md", []byte(md), 0644); err != nil {

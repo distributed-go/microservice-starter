@@ -18,15 +18,15 @@ type TokenAuth struct {
 
 // NewTokenAuth configures and returns a JWT authentication instance.
 func NewTokenAuth() (*TokenAuth, error) {
-	secret := viper.GetString("auth_jwt_secret")
+	secret := viper.GetString("jwt.auth_jwt_secret")
 	if secret == "random" {
 		secret = randStringBytes(32)
 	}
 
 	a := &TokenAuth{
 		JwtAuth:          jwtauth.New("HS256", []byte(secret), nil),
-		JwtExpiry:        viper.GetDuration("auth_jwt_expiry"),
-		JwtRefreshExpiry: viper.GetDuration("auth_jwt_refresh_expiry"),
+		JwtExpiry:        viper.GetDuration("jwt.auth_jwt_expiry"),
+		JwtRefreshExpiry: viper.GetDuration("jwt.auth_jwt_refresh_expiry"),
 	}
 
 	return a, nil

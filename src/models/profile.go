@@ -4,7 +4,7 @@ package models
 import (
 	"time"
 
-	"github.com/go-ozzo/ozzo-validation"
+	validation "github.com/go-ozzo/ozzo-validation"
 
 	"github.com/go-pg/pg/orm"
 )

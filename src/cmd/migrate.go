@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/jobbox-tech/recruiter-ui/database/migrate"
+	"github.com/jobbox-tech/recruiter-api/database/migrate"
 )
 
 var reset bool

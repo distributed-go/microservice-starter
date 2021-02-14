@@ -14,9 +14,9 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/gofrs/uuid"
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/email"
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/email"
+	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/mssola/user_agent"
 	"github.com/sirupsen/logrus"
 )

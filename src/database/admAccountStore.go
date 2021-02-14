@@ -7,9 +7,9 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	"github.com/go-pg/pg/urlvalues"
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/auth/pwdless"
-	"github.com/jobbox-tech/recruiter-ui/models"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
+	"github.com/jobbox-tech/recruiter-api/models"
 )
 
 var (

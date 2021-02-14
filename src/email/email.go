@@ -41,15 +41,15 @@ func NewMailer() (*Mailer, error) {
 		User     string
 		Password string
 	}{
-		viper.GetString("email_smtp_host"),
-		viper.GetInt("email_smtp_port"),
-		viper.GetString("email_smtp_user"),
-		viper.GetString("email_smtp_password"),
+		viper.GetString("mail.smtp_host"),
+		viper.GetInt("mail.smtp_port"),
+		viper.GetString("mail.smtp_user"),
+		viper.GetString("mail.smtp_password"),
 	}
 
 	s := &Mailer{
 		client: mail.NewPlainDialer(smtp.Host, smtp.Port, smtp.User, smtp.Password),
-		from:   NewEmail(viper.GetString("email_from_name"), viper.GetString("email_from_address")),
+		from:   NewEmail(viper.GetString("mail.from_name"), viper.GetString("mail.from_address")),
 	}
 
 	if smtp.Host == "" {

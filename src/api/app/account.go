@@ -11,8 +11,8 @@ import (
 	"github.com/go-chi/render"
 	validation "github.com/go-ozzo/ozzo-validation"
 
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/auth/pwdless"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
 )
 
 // The list of error types returned from account resource.

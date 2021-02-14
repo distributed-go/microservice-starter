@@ -3,7 +3,7 @@ package pwdless
 import (
 	"time"
 
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 func (rs *Resource) choresTicker() {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/render"
 
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 )
 
 // RequiresRole middleware restricts access to accounts having role parameter in their jwt claims.

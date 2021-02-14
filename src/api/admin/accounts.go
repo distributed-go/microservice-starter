@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jobbox-tech/recruiter-ui/auth/pwdless"
-	"github.com/jobbox-tech/recruiter-ui/database"
+	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
+	"github.com/jobbox-tech/recruiter-api/database"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"

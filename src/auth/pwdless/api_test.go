@@ -18,9 +18,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/spf13/viper"
 
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/email"
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/email"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 var (

@@ -8,7 +8,7 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/go-pg/pg/orm"
 
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 )
 
 // Account represents an authenticated application user

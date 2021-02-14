@@ -8,8 +8,8 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/sirupsen/logrus"
 
-	"github.com/jobbox-tech/recruiter-ui/database"
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/database"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 type ctxKey int

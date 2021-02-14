@@ -1,0 +1,28 @@
+{
+    "host": {
+        "address": "localhost",
+        "port": 3000,
+        "enable_cors": true
+    },
+    "jwt": {
+        "auth_jwt_expiry" : "15m",
+        "auth_jwt_refresh_expiry":"1h",
+        "auth_jwt_secret": "random", 
+        "auth_login_token_expiry" : "11m",
+        "auth_login_token_length":8,
+        "auth_login_url":"http://localhost:3000/login"    
+    },
+    "db_debug":false,
+    "logging": {
+        "text_logging": false,
+        "log_level": "DEBUG"
+    },
+    "mail": {
+		"smtp_host": "",
+		"smtp_port": "",
+		"smtp_user": "",
+        "smtp_password": "",
+        "from_name": "",
+        "from_address": ""
+    }
+}

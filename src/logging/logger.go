@@ -25,7 +25,7 @@ type StructuredLogger struct {
 // NewLogger creates and configures a new logrus Logger.
 func NewLogger() *logrus.Logger {
 	Logger = logrus.New()
-	if viper.GetBool("log_textlogging") {
+	if viper.GetBool("logging.textlogging") {
 		Logger.Formatter = &logrus.TextFormatter{
 			DisableTimestamp: true,
 		}
@@ -35,7 +35,7 @@ func NewLogger() *logrus.Logger {
 		}
 	}
 
-	level := viper.GetString("log_level")
+	level := viper.GetString("logging.log_level")
 	if level == "" {
 		level = "error"
 	}

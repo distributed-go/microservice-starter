@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/go-pg/pg"
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/auth/pwdless"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
 )
 
 // AuthStore implements database operations for account pwdlessentication.

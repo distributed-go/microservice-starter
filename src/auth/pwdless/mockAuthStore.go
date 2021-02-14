@@ -1,6 +1,6 @@
 package pwdless
 
-import "github.com/jobbox-tech/recruiter-ui/auth/jwt"
+import "github.com/jobbox-tech/recruiter-api/auth/jwt"
 
 // MockAuthStore mocks AuthStorer interface.
 type MockAuthStore struct {

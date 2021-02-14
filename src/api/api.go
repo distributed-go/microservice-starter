@@ -12,13 +12,13 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-ui/api/admin"
-	"github.com/jobbox-tech/recruiter-ui/api/app"
-	"github.com/jobbox-tech/recruiter-ui/auth/jwt"
-	"github.com/jobbox-tech/recruiter-ui/auth/pwdless"
-	"github.com/jobbox-tech/recruiter-ui/database"
-	"github.com/jobbox-tech/recruiter-ui/email"
-	"github.com/jobbox-tech/recruiter-ui/logging"
+	"github.com/jobbox-tech/recruiter-api/api/admin"
+	"github.com/jobbox-tech/recruiter-api/api/app"
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
+	"github.com/jobbox-tech/recruiter-api/database"
+	"github.com/jobbox-tech/recruiter-api/email"
+	"github.com/jobbox-tech/recruiter-api/logging"
 )
 
 // New configures application resources and routes.

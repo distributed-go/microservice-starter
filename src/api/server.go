@@ -19,13 +19,13 @@ type Server struct {
 // NewServer creates and configures an APIServer serving all application routes.
 func NewServer() (*Server, error) {
 	log.Println("configuring server...")
-	api, err := New(viper.GetBool("enable_cors"))
+	api, err := New(viper.GetBool("host.enable_cors"))
 	if err != nil {
 		return nil, err
 	}
 
 	var addr string
-	port := viper.GetString("port")
+	port := viper.GetString("host.port")
 
 	// allow port to be set as localhost:3000 in env during development to avoid "accept incoming network connection" request on restarts
 	if strings.Contains(port, ":") {

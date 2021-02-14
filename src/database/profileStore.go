@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/go-pg/pg"
-	"github.com/jobbox-tech/recruiter-ui/models"
+	"github.com/jobbox-tech/recruiter-api/models"
 )
 
 // ProfileStore implements database operations for profile management.
