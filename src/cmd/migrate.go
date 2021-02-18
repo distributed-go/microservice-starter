@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
@@ -9,9 +10,10 @@ import (
 	"time"
 
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
-	migrate "github.com/eminetto/mongo-migrate"
-	"github.com/globalsign/mgo"
+	migrate "github.com/jobbox-tech/mongomigrate"
 	_ "github.com/jobbox-tech/recruiter-api/migrations" // import migrations
 	"github.com/spf13/cobra"
 )
@@ -48,17 +50,25 @@ func init() {
 }
 
 func run() {
-	session, err := mgo.Dial(viper.GetString("db.host"))
+	fmt.Println("HDB", viper.GetString("db.host"), viper.GetString("db.database"))
+
+	opt := options.Client().ApplyURI(viper.GetString("db.host"))
+	client, err := mongo.NewClient(opt)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	fmt.Println("HDB", viper.GetString("db.host"), viper.GetString("db.database"))
 
-	defer session.Close()
-	db := session.DB(viper.GetString("db.database"))
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	db := client.Database(viper.GetString("db.database"))
 	migrate.SetDatabase(db)
 	migrate.SetMigrationsCollection("migrations")
-	migrate.SetLogger(log.New(os.Stdout, "INFO: ", 0))
 
 	switch action {
 	case "new":

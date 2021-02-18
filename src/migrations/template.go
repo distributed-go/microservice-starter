@@ -1,20 +1,18 @@
 package migrations
 
-// import (
-// 	migrate "github.com/eminetto/mongo-migrate"
-// 	"github.com/globalsign/mgo"
-// 	"github.com/globalsign/mgo/bson"
-// )
+import (
+	"fmt"
+
+	migrate "github.com/jobbox-tech/mongomigrate"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 func init() {
-	// migrate.Register(func(db *mgo.Database) error { //Up
-	// 	return db.C("user").Update(
-	// 		bson.M{"email": "admin@codenation.com.br"},
-	// 		bson.M{"$set": bson.M{"type": 1}})
-
-	// }, func(db *mgo.Database) error { //Down
-	// 	return db.C("user").Update(
-	// 		bson.M{"email": "admin@codenation.com.br"},
-	// 		bson.M{"$set": bson.M{"type": 0}})
-	// })
+	migrate.Register(func(db *mongo.Database) error {
+		fmt.Println(*db, "Apply migrations here...")
+		return nil
+	}, func(db *mongo.Database) error { //Down
+		fmt.Println(*db, "Apply migrations here...")
+		return nil
+	})
 }

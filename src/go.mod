@@ -3,8 +3,8 @@ module github.com/jobbox-tech/recruiter-api
 require (
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
+	github.com/aws/aws-sdk-go v1.34.27 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/eminetto/mongo-migrate v0.1.4
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/go-chi/cors v1.0.0
@@ -19,6 +19,9 @@ require (
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/jaytaylor/html2text v0.0.0-20200220170450-61d9dc4d7195
 	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/jobbox-tech/mongomigrate v0.2.2-0.20200920052350-f9e44748f818
+	github.com/klauspost/compress v1.11.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mssola/user_agent v0.5.1
 	github.com/olekukonko/tablewriter v0.0.4 // indirect
@@ -29,7 +32,8 @@ require (
 	github.com/vanng822/css v0.1.0 // indirect
 	github.com/vanng822/go-premailer v0.0.0-20191214114701-be27abe028fe
 	go.mongodb.org/mongo-driver v1.4.1
-	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce
+	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
+	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208 // indirect
 	mellium.im/sasl v0.2.1 // indirect
 )
 

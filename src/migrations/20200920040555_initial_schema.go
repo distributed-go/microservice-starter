@@ -3,15 +3,15 @@ package migrations
 import (
 	"fmt"
 
-	migrate "github.com/eminetto/mongo-migrate"
-	"github.com/globalsign/mgo"
+	migrate "github.com/jobbox-tech/mongomigrate"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func init() {
-	migrate.Register(func(db *mgo.Database) error { //Up
+	migrate.Register(func(db *mongo.Database) error {
 		fmt.Println(*db, "Apply migrations here...")
 		return nil
-	}, func(db *mgo.Database) error { //Down
+	}, func(db *mongo.Database) error { //Down
 		fmt.Println(*db, "Apply migrations here...")
 		return nil
 	})
