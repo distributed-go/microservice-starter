@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	migrate "github.com/jobbox-tech/mongomigrate"
-	_ "github.com/jobbox-tech/recruiter-api/migrations" // import migrations
+	_ "github.com/jobbox-tech/recruiter-api/database/migrations" // import migrations
 	"github.com/spf13/cobra"
 )
 
@@ -50,15 +50,16 @@ func init() {
 }
 
 func run() {
-	fmt.Println("HDB", viper.GetString("db.host"), viper.GetString("db.database"))
-
 	opt := options.Client().ApplyURI(viper.GetString("db.host"))
 	client, err := mongo.NewClient(opt)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
 	defer cancel()
 
 	err = client.Connect(ctx)
@@ -75,8 +76,8 @@ func run() {
 		if len(message) == 0 {
 			log.Fatal("Provide message for new migration")
 		}
-		fName := fmt.Sprintf("./migrations/%s_%s.go", time.Now().Format("20060102150405"), strings.ReplaceAll(message, " ", "_"))
-		from, err := os.Open("./migrations/template.go")
+		fName := fmt.Sprintf("./database/migrations/%s_%s.go", time.Now().Format("20060102150405"), strings.ReplaceAll(message, " ", "_"))
+		from, err := os.Open("./database/migrations/template.go")
 		if err != nil {
 			log.Fatal("Migration template not found")
 		}
