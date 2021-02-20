@@ -20,7 +20,8 @@
     "db_debug":false,
     "logging": {
         "text_logging": false,
-        "log_level": "DEBUG"
+        "log_level": "DEBUG",
+        "log_filename": "platform-recruiter-api.log"
     },
     "mail": {
 		"smtp_host": "",

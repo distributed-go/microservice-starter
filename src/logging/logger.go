@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/go-chi/chi/middleware"
@@ -24,6 +25,13 @@ type StructuredLogger struct {
 
 // NewLogger creates and configures a new logrus Logger.
 func NewLogger() *logrus.Logger {
+	filename := viper.GetString("logging.log_filename")
+	// Create the log file if doesn't exist. And append to it if it already exists.
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatalf("Failed to create log file with error %v", err)
+	}
+
 	Logger = logrus.New()
 	if viper.GetBool("logging.textlogging") {
 		Logger.Formatter = &logrus.TextFormatter{
@@ -44,6 +52,8 @@ func NewLogger() *logrus.Logger {
 		log.Fatal(err)
 	}
 	Logger.Level = l
+	Logger.SetReportCaller(true)
+	Logger.SetOutput(f)
 	return Logger
 }
 
