@@ -8,10 +8,12 @@ import (
 
 func (rs *Resource) choresTicker() {
 	ticker := time.NewTicker(time.Hour * 1)
+	logger := logging.NewLogger()
+
 	go func() {
 		for range ticker.C {
 			if err := rs.Store.PurgeExpiredToken(); err != nil {
-				logging.Logger.WithField("chore", "purgeExpiredToken").Error(err)
+				logger.Log.WithField("chore", "purgeExpiredToken").Error(err)
 			}
 		}
 	}()

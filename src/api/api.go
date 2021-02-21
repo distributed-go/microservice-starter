@@ -27,32 +27,32 @@ func New(enableCORS bool) (*chi.Mux, error) {
 
 	db, err := database.DBConn()
 	if err != nil {
-		logger.WithField("module", "database").Error(err)
+		logger.Error("", "DBFailed").Errorf("Failed to initialize database with error %v", err)
 		return nil, err
 	}
 
 	mailer, err := email.NewMailer()
 	if err != nil {
-		logger.WithField("module", "email").Error(err)
+		logger.Log.WithField("module", "email").Error(err)
 		return nil, err
 	}
 
 	authStore := database.NewAuthStore(db)
 	authResource, err := pwdless.NewResource(authStore, mailer)
 	if err != nil {
-		logger.WithField("module", "auth").Error(err)
+		logger.Log.WithField("module", "auth").Error(err)
 		return nil, err
 	}
 
 	adminAPI, err := admin.NewAPI(db)
 	if err != nil {
-		logger.WithField("module", "admin").Error(err)
+		logger.Error("", "DBFailed").Errorf("Failed to initialize database with error %v", err)
 		return nil, err
 	}
 
 	appAPI, err := app.NewAPI(db)
 	if err != nil {
-		logger.WithField("module", "app").Error(err)
+		logger.Error("", "DBFailed").Errorf("Failed to initialize database with error %v", err)
 		return nil, err
 	}
 
@@ -63,7 +63,7 @@ func New(enableCORS bool) (*chi.Mux, error) {
 	r.Use(middleware.DefaultCompress)
 	r.Use(middleware.Timeout(15 * time.Second))
 
-	r.Use(logging.NewStructuredLogger(logger))
+	r.Use(logging.NewHTTPLogger(logger.Log))
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	// use CORS middleware if client is not served by this api, e.g. from other domain or CDN
