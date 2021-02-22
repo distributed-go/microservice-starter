@@ -16,6 +16,7 @@ require (
 	github.com/go-pg/migrations v6.2.0+incompatible
 	github.com/go-pg/pg v7.1.7+incompatible
 	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/google/uuid v1.1.2
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/jaytaylor/html2text v0.0.0-20200220170450-61d9dc4d7195
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -34,6 +35,7 @@ require (
 	go.mongodb.org/mongo-driver v1.4.1
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208 // indirect
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	mellium.im/sasl v0.2.1 // indirect
 )
 

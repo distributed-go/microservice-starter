@@ -13,7 +13,7 @@ func (rs *Resource) choresTicker() {
 	go func() {
 		for range ticker.C {
 			if err := rs.Store.PurgeExpiredToken(); err != nil {
-				logger.Log.WithField("chore", "purgeExpiredToken").Error(err)
+				logger.WithField("chore", "purgeExpiredToken").Error(err)
 			}
 		}
 	}()
