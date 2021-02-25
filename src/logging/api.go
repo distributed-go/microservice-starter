@@ -8,4 +8,5 @@ type Logger interface {
 	Error(txID string, errorCode string) *logrus.Entry
 	Fatal(txID string, errorCode string) *logrus.Entry
 	WithField(key string, value interface{}) *logrus.Entry
+	Logger() *logrus.Logger
 }

@@ -20,8 +20,9 @@ type StructuredLoggerEntry struct {
 }
 
 // NewHTTPLogger implements a custom structured logrus Logger.
-func NewHTTPLogger(logger *logrus.Logger) func(next http.Handler) http.Handler {
-	return middleware.RequestLogger(&StructuredLogger{logger})
+func NewHTTPLogger() func(next http.Handler) http.Handler {
+	log := NewLogger()
+	return middleware.RequestLogger(&StructuredLogger{log.Logger()})
 }
 
 // NewLogEntry sets default request log fields.

@@ -75,3 +75,7 @@ func (l *log) Fatal(txID string, errorCode string) *logrus.Entry {
 func (l *log) WithField(key string, value interface{}) *logrus.Entry {
 	return l.log.WithField(key, value)
 }
+
+func (l *log) Logger() *logrus.Logger {
+	return l.log
+}

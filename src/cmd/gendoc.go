@@ -47,7 +47,7 @@ func init() {
 }
 
 func genRoutesDoc() {
-	api, _ := api.New(false)
+	api := api.New(false)
 	fmt.Print("generating routes markdown file: ")
 	md := docgen.MarkdownRoutesDoc(api, docgen.MarkdownOpts{
 		ProjectPath: "github.com/jobbox-tech/recruiter-api",

@@ -7,7 +7,8 @@
     "db": {
         "host": "mongodb://localhost:27017",
         "database": "recruiter_db",
-        "query_timeout_in_sec": 40
+        "query_timeout_in_sec": 40,
+        "recruiters_collection": "recruiters"
     },
     "jwt": {
         "auth_jwt_expiry" : "15m",

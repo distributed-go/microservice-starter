@@ -1,11 +1,8 @@
 package cmd
 
 import (
-	"log"
-
-	"github.com/jobbox-tech/recruiter-api/api"
+	"github.com/jobbox-tech/recruiter-api/api/server"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // serveCmd represents the serve command
@@ -14,27 +11,13 @@ var serveCmd = &cobra.Command{
 	Short: "start http server with configured api",
 	Long:  `Starts a http server and serves the configured api`,
 	Run: func(cmd *cobra.Command, args []string) {
-		server, err := api.NewServer()
-		if err != nil {
-			log.Fatal(err)
-		}
+		server := server.New()
 		server.Start()
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(serveCmd)
-
-	// Here you will define your flags and configuration settings.
-	viper.SetDefault("port", "localhost:3000")
-	viper.SetDefault("log.log_level", "debug")
-
-	viper.SetDefault("jwt.auth_login_url", "http://localhost:3000/login")
-	viper.SetDefault("jwt.auth_login_token_length", 8)
-	viper.SetDefault("jwt.auth_login_token_expiry", "11m")
-	viper.SetDefault("jwt.auth_jwt_secret", "random")
-	viper.SetDefault("jwt.auth_jwt_expiry", "15m")
-	viper.SetDefault("jwt.auth_jwt_refresh_expiry", "1h")
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
