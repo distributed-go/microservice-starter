@@ -1,8 +1,18 @@
 {
     "host": {
-        "address": "localhost",
-        "port": 3000,
+        "address": "127.0.0.1",
+        "port": 8001,
         "enable_cors": true
+    },
+    "web": {
+        "api_version_v1": "/v1",
+        "url_prefix": "/recruiter-api",
+        "allowed_origins": ["*"],
+        "allowed_methods":   ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allowed_headers":   ["Accept", "Authorization", "Content-Type", "X-CSRF-Token"],
+        "exposed_headers":   ["Link"],
+        "allow_credentials": true,
+        "max_age":           86400
     },
     "db": {
         "host": "mongodb://localhost:27017",

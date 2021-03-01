@@ -29,13 +29,9 @@ func NewLogger() Logger {
 	l.log.SetOutput(f)
 
 	if viper.GetBool("logging.textlogging") {
-		l.log.Formatter = &logrus.TextFormatter{
-			DisableTimestamp: false,
-		}
+		l.log.Formatter = &logrus.TextFormatter{}
 	} else {
-		l.log.Formatter = &logrus.JSONFormatter{
-			DisableTimestamp: false,
-		}
+		l.log.Formatter = &logrus.JSONFormatter{}
 	}
 
 	level := viper.GetString("logging.log_level")

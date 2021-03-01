@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/jobbox-tech/recruiter-api/api/server"
+	"github.com/jobbox-tech/recruiter-api/web/server"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ var serveCmd = &cobra.Command{
 	Short: "start http server with configured api",
 	Long:  `Starts a http server and serves the configured api`,
 	Run: func(cmd *cobra.Command, args []string) {
-		server := server.New()
+		server := server.NewServer()
 		server.Start()
 	},
 }

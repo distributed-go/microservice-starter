@@ -2,15 +2,14 @@ package server
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/jobbox-tech/recruiter-api/api"
 	"github.com/jobbox-tech/recruiter-api/logging"
+	"github.com/jobbox-tech/recruiter-api/web/router"
 	"github.com/spf13/viper"
 )
 
@@ -21,17 +20,14 @@ type server struct {
 	txID   string
 }
 
-// New creates and configures an APIServer serving all application routes.
-func New() Server {
-	txID := uuid.New().String()
-
-	log.Println("configuring server...")
-	apiHandler := api.New(viper.GetBool("host.enable_cors"))
-
+// NewServer creates and configures an APIServer serving all application routes.
+func NewServer() Server {
 	var addr string
 	port := viper.GetString("host.port")
+	txID := uuid.New().String()
+	apiHandler := router.NewRouter(viper.GetBool("host.enable_cors"))
 
-	// allow port to be set as localhost:3000 in env during development to avoid "accept incoming network connection" request on restarts
+	// allow port to be set as localhost:8001 in env during development to avoid "accept incoming network connection" request on restarts
 	if strings.Contains(port, ":") {
 		addr = port
 	} else {

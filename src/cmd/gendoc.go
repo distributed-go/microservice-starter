@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/go-chi/docgen"
-	"github.com/jobbox-tech/recruiter-api/api"
+	"github.com/jobbox-tech/recruiter-api/web/router"
 	"github.com/spf13/cobra"
 )
 
@@ -47,7 +47,7 @@ func init() {
 }
 
 func genRoutesDoc() {
-	api := api.New(false)
+	api := router.NewRouter(false)
 	fmt.Print("generating routes markdown file: ")
 	md := docgen.MarkdownRoutesDoc(api, docgen.MarkdownOpts{
 		ProjectPath: "github.com/jobbox-tech/recruiter-api",
