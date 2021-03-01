@@ -3,6 +3,7 @@ package logging
 
 import (
 	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -29,9 +30,13 @@ func NewLogger() Logger {
 	l.log.SetOutput(f)
 
 	if viper.GetBool("logging.textlogging") {
-		l.log.Formatter = &logrus.TextFormatter{}
+		l.log.Formatter = &logrus.TextFormatter{
+			DisableTimestamp: true,
+		}
 	} else {
-		l.log.Formatter = &logrus.JSONFormatter{}
+		l.log.Formatter = &logrus.JSONFormatter{
+			DisableTimestamp: true,
+		}
 	}
 
 	level := viper.GetString("logging.log_level")
@@ -49,27 +54,32 @@ func NewLogger() Logger {
 
 // Info adds info logs
 func (l *log) Info(txID string) *logrus.Entry {
-	return l.log.WithField("txID", txID)
+	return l.log.WithField("transaction_id", txID).WithField("timestamp_utc", time.Now().UTC())
 }
 
 // Debug adds debug logs
 func (l *log) Debug(txID string, message string) *logrus.Entry {
-	return l.log.WithField("txID", txID)
+	return l.log.WithField("transaction_id", txID).WithField("timestamp_utc", time.Now().UTC())
 }
 
 // Error adds error logs
 func (l *log) Error(txID string, errorCode string) *logrus.Entry {
-	return l.log.WithField("txID", txID).WithField("errorCode", errorCode)
+	return l.log.WithField("transaction_id", txID).WithField("errorCode", errorCode).WithField("timestamp_utc", time.Now().UTC())
 }
 
 // Fatal adds Fatal logs
 func (l *log) Fatal(txID string, errorCode string) *logrus.Entry {
-	return l.log.WithField("txID", txID).WithField("errorCode", errorCode)
+	return l.log.WithField("transaction_id", txID).WithField("errorCode", errorCode).WithField("timestamp_utc", time.Now().UTC())
 }
 
 // WithField adds Field
 func (l *log) WithField(key string, value interface{}) *logrus.Entry {
-	return l.log.WithField(key, value)
+	return l.log.WithField("timestamp_utc", time.Now().UTC()).WithField(key, value)
+}
+
+// WithFields adds Fields
+func (l *log) WithFields(fields logrus.Fields) *logrus.Entry {
+	return l.log.WithField("timestamp_utc", time.Now().UTC()).WithFields(fields)
 }
 
 func (l *log) Logger() *logrus.Logger {

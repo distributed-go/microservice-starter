@@ -1,4 +1,4 @@
-package database
+package connection
 
 import (
 	"context"
@@ -6,11 +6,13 @@ import (
 	"time"
 
 	"github.com/jobbox-tech/recruiter-api/logging"
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
 
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var (
@@ -25,8 +27,8 @@ type mongoStore struct {
 	txID   string
 }
 
-// New returns new instance of datastore
-func New() MongoStore {
+// NewMongoStore returns new instance of datastore
+func NewMongoStore() MongoStore {
 	return &mongoStore{
 		logger: logging.NewLogger(),
 		txID:   uuid.New().String(),
@@ -72,4 +74,29 @@ func (s *mongoStore) initialize() (a *mongo.Database, b *mongo.Client) {
 	s.logger.Info(s.txID).Infof("Successfully connected to database %s", database)
 
 	return db, client
+}
+
+func (s *mongoStore) Health() *healthinterface.OutboundInterface {
+	once.Do(func() {
+		db, client = s.initialize()
+	})
+
+	outbound := healthinterface.OutboundInterface{}
+	outbound.TimeStampUTC = time.Now().UTC()
+	outbound.ConnectionStatus = healthinterface.ConnectionActive
+	outbound.ApplicationName = "MongoDB"
+	outbound.URLs = []string{viper.GetString("db.host")}
+
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	err := client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		outbound.ConnectionStatus = healthinterface.ConnectionDisconnected
+	}
+
+	return &outbound
 }

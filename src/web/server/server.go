@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jobbox-tech/recruiter-api/logging"
@@ -15,9 +16,10 @@ import (
 
 // Server provides an http.Server.
 type server struct {
-	svr    *http.Server
-	logger logging.Logger
-	txID   string
+	svr               *http.Server
+	logger            logging.Logger
+	txID              string
+	startTimeStampUTC time.Time
 }
 
 // NewServer creates and configures an APIServer serving all application routes.
@@ -25,7 +27,7 @@ func NewServer() Server {
 	var addr string
 	port := viper.GetString("host.port")
 	txID := uuid.New().String()
-	apiHandler := router.NewRouter(viper.GetBool("host.enable_cors"))
+	apiHandler := router.NewRouter().Router(viper.GetBool("host.enable_cors"))
 
 	// allow port to be set as localhost:8001 in env during development to avoid "accept incoming network connection" request on restarts
 	if strings.Contains(port, ":") {
@@ -55,6 +57,9 @@ func (s *server) Start() {
 		}
 	}()
 
+	s.startTimeStampUTC = time.Now().UTC()
+	viper.Set("service_started_timestamp_utc", time.Now().UTC())
+
 	s.logger.Info(s.txID).Infof("Server listening on %s", s.svr.Addr)
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
@@ -66,4 +71,8 @@ func (s *server) Start() {
 	}
 
 	s.logger.Info(s.txID).Info("Server gracefully stopped")
+}
+
+func (s *server) StartTimeStampUTC() time.Time {
+	return s.startTimeStampUTC
 }

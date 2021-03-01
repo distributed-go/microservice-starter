@@ -4,7 +4,6 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
-	"github.com/jobbox-tech/recruiter-api/models"
 )
 
 // AccountStore implements database operations for account management by user.
@@ -42,11 +41,6 @@ func (s *AccountStore) Update(a *pwdless.Account) error {
 func (s *AccountStore) Delete(a *pwdless.Account) error {
 	err := s.db.RunInTransaction(func(tx *pg.Tx) error {
 		if _, err := tx.Model(&jwt.Token{}).
-			Where("account_id = ?", a.ID).
-			Delete(); err != nil {
-			return err
-		}
-		if _, err := tx.Model(&models.Profile{}).
 			Where("account_id = ?", a.ID).
 			Delete(); err != nil {
 			return err

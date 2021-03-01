@@ -16,9 +16,7 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 	"github.com/jobbox-tech/recruiter-api/email"
-	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/mssola/user_agent"
-	"github.com/sirupsen/logrus"
 )
 
 // AuthStorer defines database operations on accounts and tokens.
@@ -85,10 +83,6 @@ func (rs *Resource) Router() *chi.Mux {
 	return r
 }
 
-func log(r *http.Request) logrus.FieldLogger {
-	return logging.GetLogEntry(r)
-}
-
 type loginRequest struct {
 	Email string
 }
@@ -105,14 +99,14 @@ func (body *loginRequest) Bind(r *http.Request) error {
 func (rs *Resource) login(w http.ResponseWriter, r *http.Request) {
 	body := &loginRequest{}
 	if err := render.Bind(r, body); err != nil {
-		log(r).WithField("email", body.Email).Warn(err)
+		// log(r).WithField("email", body.Email).Warn(err)
 		render.Render(w, r, ErrUnauthorized(ErrInvalidLogin))
 		return
 	}
 
 	acc, err := rs.Store.GetAccountByEmail(body.Email)
 	if err != nil {
-		log(r).WithField("email", body.Email).Warn(err)
+		// log(r).WithField("email", body.Email).Warn(err)
 		render.Render(w, r, ErrUnauthorized(ErrUnknownLogin))
 		return
 	}
@@ -133,7 +127,7 @@ func (rs *Resource) login(w http.ResponseWriter, r *http.Request) {
 			Expiry: lt.Expiry,
 		}
 		if err := rs.Mailer.LoginToken(acc.Name, acc.Email, content); err != nil {
-			log(r).WithField("module", "email").Error(err)
+			// log(r).WithField("module", "email").Error(err)
 		}
 	}()
 
@@ -160,7 +154,7 @@ func (body *tokenRequest) Bind(r *http.Request) error {
 func (rs *Resource) token(w http.ResponseWriter, r *http.Request) {
 	body := &tokenRequest{}
 	if err := render.Bind(r, body); err != nil {
-		log(r).Warn(err)
+		// log(r).Warn(err)
 		render.Render(w, r, ErrUnauthorized(ErrLoginToken))
 		return
 	}
@@ -196,21 +190,21 @@ func (rs *Resource) token(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := rs.Store.CreateOrUpdateToken(token); err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}
 
 	access, refresh, err := rs.TokenAuth.GenTokenPair(acc.Claims(), token.Claims())
 	if err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}
 
 	acc.LastLogin = time.Now()
 	if err := rs.Store.UpdateAccount(acc); err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}
@@ -253,20 +247,20 @@ func (rs *Resource) refresh(w http.ResponseWriter, r *http.Request) {
 
 	access, refresh, err := rs.TokenAuth.GenTokenPair(acc.Claims(), token.Claims())
 	if err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}
 
 	if err := rs.Store.CreateOrUpdateToken(token); err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}
 
 	acc.LastLogin = time.Now()
 	if err := rs.Store.UpdateAccount(acc); err != nil {
-		log(r).Error(err)
+		// log(r).Error(err)
 		render.Render(w, r, ErrInternalServerError)
 		return
 	}

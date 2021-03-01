@@ -1,6 +1,9 @@
-package database
+package connection
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 const (
 	// DBConnectionFailed used when failed to create a database client
@@ -11,4 +14,5 @@ const (
 type MongoStore interface {
 	Client() *mongo.Client
 	Database() *mongo.Database
+	Health() *healthinterface.OutboundInterface
 }

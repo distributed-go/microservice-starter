@@ -9,7 +9,6 @@ import (
 	"github.com/go-pg/pg/urlvalues"
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 	"github.com/jobbox-tech/recruiter-api/auth/pwdless"
-	"github.com/jobbox-tech/recruiter-api/models"
 )
 
 var (
@@ -88,10 +87,8 @@ func (s *AdmAccountStore) Create(a *pwdless.Account) error {
 		if err != nil {
 			return err
 		}
-		p := &models.Profile{
-			AccountID: a.ID,
-		}
-		return tx.Insert(p)
+
+		return nil
 	})
 
 	return err
@@ -118,11 +115,7 @@ func (s *AdmAccountStore) Delete(a *pwdless.Account) error {
 			Delete(); err != nil {
 			return err
 		}
-		if _, err := tx.Model(&models.Profile{}).
-			Where("account_id = ?", a.ID).
-			Delete(); err != nil {
-			return err
-		}
+
 		return tx.Delete(a)
 	})
 	return err
