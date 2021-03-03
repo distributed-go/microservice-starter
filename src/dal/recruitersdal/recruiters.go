@@ -1,11 +1,11 @@
-package recruiters
+package recruitersdal
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/database"
+	"github.com/jobbox-tech/recruiter-api/database/connection"
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
 	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/spf13/viper"
@@ -14,13 +14,14 @@ import (
 
 type recruiters struct {
 	log logging.Logger
-	db  database.MongoStore
+	db  connection.MongoStore
 }
 
-func New() *recruiters {
+// NewRecruitersDal ...
+func NewRecruitersDal() RecruitersDal {
 	return &recruiters{
 		log: logging.NewLogger(),
-		db:  database.New(),
+		db:  connection.NewMongoStore(),
 	}
 }
 

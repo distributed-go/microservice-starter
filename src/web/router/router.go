@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jobbox-tech/recruiter-api/web/services/v1/recruiterservice"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -16,15 +18,17 @@ import (
 )
 
 type router struct {
-	logger logging.Logger
-	health health.Health
+	logger    logging.Logger
+	health    health.Health
+	recruiter recruiterservice.RecruiterService
 }
 
 // NewRouter returns the router implementation
 func NewRouter() Router {
 	return &router{
-		logger: logging.NewLogger(),
-		health: health.NewHealth(),
+		logger:    logging.NewLogger(),
+		health:    health.NewHealth(),
+		recruiter: recruiterservice.NewRecruiterService(),
 	}
 }
 
@@ -53,6 +57,10 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 
 	// =================  health routes ======================
 	r.Get(viper.GetString("web.url_prefix")+"/health", router.health.GetHealth)
+
+	// =================  recruiters routes ======================
+	recruiterPrefix := v1Prefix + "/recruiters"
+	r.Post(recruiterPrefix+"/signup", router.recruiter.CreateRecruiter)
 
 	// =================  ping pong ======================
 	r.Get(v1Prefix+"/ping", func(w http.ResponseWriter, r *http.Request) {
