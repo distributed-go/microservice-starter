@@ -1,4 +1,4 @@
-package recruitersdal
+package recruiterdal
 
 import (
 	"context"
@@ -12,21 +12,21 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type recruiters struct {
+type recruiter struct {
 	log logging.Logger
 	db  connection.MongoStore
 }
 
-// NewRecruitersDal ...
-func NewRecruitersDal() RecruitersDal {
-	return &recruiters{
+// NewRecruiterDal ...
+func NewRecruiterDal() RecruiterDal {
+	return &recruiter{
 		log: logging.NewLogger(),
 		db:  connection.NewMongoStore(),
 	}
 }
 
 // Create creates a new account.
-func (r *recruiters) Create(txID string, account *dbmodels.Recruiters) (primitive.ObjectID, error) {
+func (r *recruiter) Create(txID string, account *dbmodels.Recruiter) (primitive.ObjectID, error) {
 	rc := r.db.Database().Collection(viper.GetString("db.recruiters_collection"))
 	ctx, cancel := context.WithTimeout(
 		context.Background(),

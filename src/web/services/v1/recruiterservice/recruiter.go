@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/dal/recruitersdal"
+	"github.com/jobbox-tech/recruiter-api/dal/recruiterdal"
+	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
 
 	"github.com/go-chi/render"
 	validation "github.com/go-ozzo/ozzo-validation"
@@ -16,15 +17,15 @@ import (
 )
 
 type recruiterservice struct {
-	logger        logging.Logger
-	recruitersDal recruitersdal.RecruitersDal
+	logger       logging.Logger
+	recruiterDal recruiterdal.RecruiterDal
 }
 
 // NewRecruiterService returns service impl
 func NewRecruiterService() RecruiterService {
 	return &recruiterservice{
-		logger:        logging.NewLogger(),
-		recruitersDal: recruitersdal.NewRecruitersDal(),
+		logger:       logging.NewLogger(),
+		recruiterDal: recruiterdal.NewRecruiterDal(),
 	}
 }
 
@@ -37,10 +38,10 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 	}
 
 	t := time.Now().UTC()
-	data.Recruiters.Roles = []dbmodels.Role{dbmodels.USER}
-	data.Recruiters.Active = true
-	data.Recruiters.CreatedTimestampUTC = &t
-	data.Recruiters.UpdatedTimestampUTC = &t
+	data.Recruiter.Roles = []recruitermodel.Role{recruitermodel.USER}
+	data.Recruiter.Active = true
+	data.Recruiter.CreatedTimestampUTC = &t
+	data.Recruiter.UpdatedTimestampUTC = &t
 
 	if err := data.Validate(); err != nil {
 		switch err.(type) {
@@ -56,20 +57,20 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	objectID, err := rs.recruitersDal.Create(txID, data.Recruiters)
+	objectID, err := rs.recruiterDal.Create(txID, data.Recruiter)
 	if err != nil {
 		rs.logger.Error(txID, "").Errorf("Failed to create recruiters record with error %v", err)
 		render.Render(w, r, renderers.ErrorInternalServerError("Failed to create recruiter account, please try again"))
 		return
 	}
 
-	data.Recruiters.ID = objectID
-	render.Respond(w, r, newRecruitersResponse(data.Recruiters))
+	data.Recruiter.ID = objectID
+	render.Respond(w, r, newRecruitersResponse(data.Recruiter))
 }
 
 // ==============  Bindings  ===============
 type recruitersRequest struct {
-	*dbmodels.Recruiters
+	*dbmodels.Recruiter
 }
 
 func (d *recruitersRequest) Bind(r *http.Request) error {
@@ -77,10 +78,10 @@ func (d *recruitersRequest) Bind(r *http.Request) error {
 }
 
 type recruitersResponse struct {
-	*dbmodels.Recruiters
+	*dbmodels.Recruiter
 }
 
-func newRecruitersResponse(a *dbmodels.Recruiters) *recruitersResponse {
-	resp := &recruitersResponse{Recruiters: a}
+func newRecruitersResponse(a *dbmodels.Recruiter) *recruitersResponse {
+	resp := &recruitersResponse{Recruiter: a}
 	return resp
 }
