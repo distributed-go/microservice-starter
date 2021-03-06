@@ -6,39 +6,39 @@ import (
 	"time"
 
 	"github.com/go-chi/jwtauth"
+	"github.com/jobbox-tech/recruiter-api/models/authmodel"
 	"github.com/spf13/viper"
 )
 
-// TokenAuth implements JWT authentication flow.
-type TokenAuth struct {
+type tokenAuth struct {
 	JwtAuth          *jwtauth.JWTAuth
 	JwtExpiry        time.Duration
 	JwtRefreshExpiry time.Duration
 }
 
 // NewTokenAuth configures and returns a JWT authentication instance.
-func NewTokenAuth() (*TokenAuth, error) {
+func NewTokenAuth() TokenAuth {
 	secret := viper.GetString("jwt.auth_jwt_secret")
 	if secret == "random" {
 		secret = randStringBytes(32)
 	}
 
-	a := &TokenAuth{
+	a := &tokenAuth{
 		JwtAuth:          jwtauth.New("HS256", []byte(secret), nil),
 		JwtExpiry:        viper.GetDuration("jwt.auth_jwt_expiry"),
 		JwtRefreshExpiry: viper.GetDuration("jwt.auth_jwt_refresh_expiry"),
 	}
 
-	return a, nil
+	return a
 }
 
 // Verifier http middleware will verify a jwt string from a http request.
-func (a *TokenAuth) Verifier() func(http.Handler) http.Handler {
+func (a *tokenAuth) Verifier() func(http.Handler) http.Handler {
 	return jwtauth.Verifier(a.JwtAuth)
 }
 
 // GenTokenPair returns both an access token and a refresh token.
-func (a *TokenAuth) GenTokenPair(accessClaims AppClaims, refreshClaims RefreshClaims) (string, string, error) {
+func (a *tokenAuth) GenTokenPair(accessClaims authmodel.AppClaims, refreshClaims authmodel.RefreshClaims) (string, string, error) {
 	access, err := a.CreateJWT(accessClaims)
 	if err != nil {
 		return "", "", err
@@ -51,7 +51,7 @@ func (a *TokenAuth) GenTokenPair(accessClaims AppClaims, refreshClaims RefreshCl
 }
 
 // CreateJWT returns an access token for provided account claims.
-func (a *TokenAuth) CreateJWT(c AppClaims) (string, error) {
+func (a *tokenAuth) CreateJWT(c authmodel.AppClaims) (string, error) {
 	c.IssuedAt = time.Now().Unix()
 	c.ExpiresAt = time.Now().Add(a.JwtExpiry).Unix()
 	_, tokenString, err := a.JwtAuth.Encode(c)
@@ -59,7 +59,7 @@ func (a *TokenAuth) CreateJWT(c AppClaims) (string, error) {
 }
 
 // CreateRefreshJWT returns a refresh token for provided token Claims.
-func (a *TokenAuth) CreateRefreshJWT(c RefreshClaims) (string, error) {
+func (a *tokenAuth) CreateRefreshJWT(c authmodel.RefreshClaims) (string, error) {
 	c.IssuedAt = time.Now().Unix()
 	c.ExpiresAt = time.Now().Add(a.JwtExpiry).Unix()
 	_, tokenString, err := a.JwtAuth.Encode(c)

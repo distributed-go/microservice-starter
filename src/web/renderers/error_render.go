@@ -42,6 +42,26 @@ func ErrorValidation(err error, valErr validation.Errors, message string) render
 	}
 }
 
+// ErrorUnauthorized renders status 401 Unauthorized with custom error message.
+func ErrorUnauthorized(err error) render.Renderer {
+	return &errorinterface.ErrorResponse{
+		Err:            err,
+		HTTPStatusCode: http.StatusUnauthorized,
+		Status:         http.StatusText(http.StatusUnauthorized),
+		Error:          err.Error(),
+	}
+}
+
+// ErrorForbidden renders status 403 forbidden with custom error message.
+func ErrorForbidden(err error) render.Renderer {
+	return &errorinterface.ErrorResponse{
+		Err:            err,
+		Error:          err.Error(),
+		HTTPStatusCode: http.StatusForbidden,
+		Status:         http.StatusText(http.StatusForbidden),
+	}
+}
+
 // ErrorBadRequest return status 400 Bad Request for malformed request body.
 func ErrorBadRequest(message string) render.Renderer {
 	return &errorinterface.ErrorResponse{

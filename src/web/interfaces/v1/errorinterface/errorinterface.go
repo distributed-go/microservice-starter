@@ -12,7 +12,7 @@ type ErrorResponse struct {
 	Err            error `json:"-"` // low-level runtime error
 	HTTPStatusCode int   `json:"-"` // http response status code
 
-	Message          string            `json:"Message,omitempty"`          // Human readable error message
+	Message          string            `json:"Message,omitempty"`          // user-level error message
 	Status           string            `json:"Status,omitempty"`           // user-level status message
 	Code             int64             `json:"Code,omitempty"`             // application-specific error code
 	Error            string            `json:"Error,omitempty"`            // application-level error message, for debugging

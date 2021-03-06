@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// Recruiter model rfepresents the recruiter collection in database
+// Recruiter model represents the recruiter collection in database
 type Recruiter struct {
 	ID                  primitive.ObjectID    `json:"ID,omitempty" bson:"_id,omitempty"`
 	CreatedTimestampUTC *time.Time            `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`

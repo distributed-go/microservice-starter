@@ -2,10 +2,14 @@ package jwt
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
+	"github.com/jobbox-tech/recruiter-api/models/authmodel"
+	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
+	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
 type ctxKey int
@@ -16,8 +20,8 @@ const (
 )
 
 // ClaimsFromCtx retrieves the parsed AppClaims from request context.
-func ClaimsFromCtx(ctx context.Context) AppClaims {
-	return ctx.Value(ctxClaims).(AppClaims)
+func ClaimsFromCtx(ctx context.Context) authmodel.AppClaims {
+	return ctx.Value(ctxClaims).(authmodel.AppClaims)
 }
 
 // RefreshTokenFromCtx retrieves the parsed refresh token from context.
@@ -34,21 +38,21 @@ func Authenticator(next http.Handler) http.Handler {
 
 		if err != nil {
 			// logging.GetLogEntry(r).Warn(err)
-			render.Render(w, r, ErrUnauthorized(ErrTokenUnauthorized))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token unauthorized")))
 			return
 		}
 
 		if !token.Valid {
-			render.Render(w, r, ErrUnauthorized(ErrTokenExpired))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token expired")))
 			return
 		}
 
 		// Token is authenticated, parse claims
-		var c AppClaims
+		var c authmodel.AppClaims
 		err = c.ParseClaims(claims)
 		if err != nil {
 			// logging.GetLogEntry(r).Error(err)
-			render.Render(w, r, ErrUnauthorized(ErrInvalidAccessToken))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("invalid access token")))
 			return
 		}
 
@@ -64,24 +68,48 @@ func AuthenticateRefreshJWT(next http.Handler) http.Handler {
 		token, claims, err := jwtauth.FromContext(r.Context())
 		if err != nil {
 			// logging.GetLogEntry(r).Warn(err)
-			render.Render(w, r, ErrUnauthorized(ErrTokenUnauthorized))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token unauthorized")))
 			return
 		}
 		if !token.Valid {
-			render.Render(w, r, ErrUnauthorized(ErrTokenExpired))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token expired")))
 			return
 		}
 
 		// Token is authenticated, parse refresh token string
-		var c RefreshClaims
+		var c authmodel.RefreshClaims
 		err = c.ParseClaims(claims)
 		if err != nil {
 			// logging.GetLogEntry(r).Error(err)
-			render.Render(w, r, ErrUnauthorized(ErrInvalidRefreshToken))
+			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("invalid refresh token")))
 			return
 		}
 		// Set refresh token string on context
 		ctx := context.WithValue(r.Context(), ctxRefreshToken, c.Token)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+// RequiresRole middleware restricts access to accounts having role parameter in their jwt claims.
+func RequiresRole(role recruitermodel.Role) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		hfn := func(w http.ResponseWriter, r *http.Request) {
+			claims := ClaimsFromCtx(r.Context())
+			if !hasRole(role, claims.Roles) {
+				render.Render(w, r, renderers.ErrorForbidden(errors.New("token insufficient provoledges")))
+				return
+			}
+			next.ServeHTTP(w, r)
+		}
+		return http.HandlerFunc(hfn)
+	}
+}
+
+func hasRole(role recruitermodel.Role, roles []recruitermodel.Role) bool {
+	for _, r := range roles {
+		if r == role {
+			return true
+		}
+	}
+	return false
 }
