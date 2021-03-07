@@ -13,9 +13,9 @@ import (
 // Recruiter model represents the recruiter collection in database
 type Recruiter struct {
 	ID                  primitive.ObjectID    `json:"ID,omitempty" bson:"_id,omitempty"`
-	CreatedTimestampUTC *time.Time            `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
-	UpdatedTimestampUTC *time.Time            `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
-	LastLogin           *time.Time            `json:"LastLogin,omitempty" bson:"LastLogin,omitempty"`
+	CreatedTimestampUTC time.Time             `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
+	UpdatedTimestampUTC time.Time             `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
+	LastLogin           time.Time             `json:"LastLogin,omitempty" bson:"LastLogin,omitempty"`
 	Email               string                `json:"Email,omitempty" bson:"Email,omitempty"`
 	FirstName           string                `json:"FirstName,omitempty" bson:"FirstName,omitempty"`
 	LastName            string                `json:"LastName,omitempty" bson:"LastName,omitempty"`

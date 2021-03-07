@@ -10,6 +10,7 @@ import (
 	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type recruiter struct {
@@ -40,4 +41,20 @@ func (r *recruiter) Create(txID string, account *dbmodels.Recruiter) (primitive.
 	}
 
 	return insertResult.InsertedID.(primitive.ObjectID), nil
+}
+
+func (r *recruiter) GetAccountByEmail(email string) (*dbmodels.Recruiter, error) {
+	rc := r.db.Database().Collection(viper.GetString("db.recruiters_collection"))
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	var rec dbmodels.Recruiter
+	if err := rc.FindOne(ctx, bson.M{"Email": email}).Decode(&rec); err != nil {
+		return nil, err
+	}
+
+	return &rec, nil
 }

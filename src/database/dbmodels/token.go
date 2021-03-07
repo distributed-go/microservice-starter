@@ -11,11 +11,11 @@ import (
 // Token model represents the recruiter collection in database
 type Token struct {
 	ID                  primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
-	CreatedTimestampUTC *time.Time         `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
-	UpdatedTimestampUTC *time.Time         `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
+	CreatedTimestampUTC time.Time          `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
+	UpdatedTimestampUTC time.Time          `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
 	AccountID           primitive.ObjectID `json:"-" bson:"AccountID,omitempty"`
 	Token               string             `json:"-" bson:"Token,omitempty"`
-	Expiry              *time.Time         `json:"-" bson:"Expiry,omitempty"`
+	Expiry              time.Time          `json:"-" bson:"Expiry,omitempty"`
 	Mobile              bool               `json:"Mobile,omitempty" bson:"Mobile,omitempty"`
 	Identifier          string             `json:"Identifier,omitempty" bson:"Identifier,omitempty"`
 }

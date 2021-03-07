@@ -1,5 +1,4 @@
-// Package email provides email sending functionality.
-package email
+package mailer
 
 import (
 	"fmt"
@@ -11,26 +10,8 @@ import (
 	"time"
 )
 
-var (
-	debug     bool
-	templates *template.Template
-)
-
-// Email struct holds email address and recipient name.
-type Email struct {
-	Name    string
-	Address string
-}
-
-// NewEmail returns an email address.
-func NewEmail(name string, address string) Email {
-	return Email{
-		Name:    name,
-		Address: address,
-	}
-}
-
-func parseTemplates() error {
+// ParseTemplates parses the templates present in ./templates dir
+func ParseTemplates() error {
 	templates = template.New("").Funcs(fMap)
 	return filepath.Walk("./templates", func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(path, ".html") {

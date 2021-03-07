@@ -15,19 +15,21 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/gofrs/uuid"
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
 	"github.com/jobbox-tech/recruiter-api/email"
+	"github.com/jobbox-tech/recruiter-api/web/renderers"
 	"github.com/mssola/user_agent"
 )
 
 // AuthStorer defines database operations on accounts and tokens.
 type AuthStorer interface {
-	GetAccount(id int) (*Account, error)
-	GetAccountByEmail(email string) (*Account, error)
-	UpdateAccount(a *Account) error
+	GetAccount(id int) (*dbmodels.Recruiter, error)
+	GetAccountByEmail(email string) (*dbmodels.Recruiter, error)
+	UpdateAccount(a *dbmodels.Recruiter) error
 
-	GetToken(token string) (*jwt.Token, error)
-	CreateOrUpdateToken(t *jwt.Token) error
-	DeleteToken(t *jwt.Token) error
+	GetToken(token string) (*dbmodels.Token, error)
+	CreateOrUpdateToken(t *dbmodels.Token) error
+	DeleteToken(t *dbmodels.Token) error
 	PurgeExpiredToken() error
 }
 
@@ -39,7 +41,7 @@ type Mailer interface {
 // Resource implements passwordless account authentication against a database.
 type Resource struct {
 	LoginAuth *LoginTokenAuth
-	TokenAuth *jwt.TokenAuth
+	TokenAuth jwt.TokenAuth
 	Store     AuthStorer
 	Mailer    Mailer
 }
@@ -51,14 +53,9 @@ func NewResource(authStore AuthStorer, mailer Mailer) (*Resource, error) {
 		return nil, err
 	}
 
-	tokenAuth, err := jwt.NewTokenAuth()
-	if err != nil {
-		return nil, err
-	}
-
 	resource := &Resource{
 		LoginAuth: loginAuth,
-		TokenAuth: tokenAuth,
+		TokenAuth: jwt.NewTokenAuth(),
 		Store:     authStore,
 		Mailer:    mailer,
 	}
@@ -78,7 +75,6 @@ func (rs *Resource) Router() *chi.Mux {
 		r.Use(rs.TokenAuth.Verifier())
 		r.Use(jwt.AuthenticateRefreshJWT)
 		r.Post("/refresh", rs.refresh)
-		r.Post("/logout", rs.logout)
 	})
 	return r
 }
@@ -100,33 +96,33 @@ func (rs *Resource) login(w http.ResponseWriter, r *http.Request) {
 	body := &loginRequest{}
 	if err := render.Bind(r, body); err != nil {
 		// log(r).WithField("email", body.Email).Warn(err)
-		render.Render(w, r, ErrUnauthorized(ErrInvalidLogin))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrInvalidLogin))
 		return
 	}
 
 	acc, err := rs.Store.GetAccountByEmail(body.Email)
 	if err != nil {
 		// log(r).WithField("email", body.Email).Warn(err)
-		render.Render(w, r, ErrUnauthorized(ErrUnknownLogin))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrUnknownLogin))
 		return
 	}
 
 	if !acc.CanLogin() {
-		render.Render(w, r, ErrUnauthorized(ErrLoginDisabled))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrLoginDisabled))
 		return
 	}
 
-	lt := rs.LoginAuth.CreateToken(acc.ID)
+	lt := rs.LoginAuth.CreateToken(0) // TODO
 
 	go func() {
 		content := email.ContentLoginToken{
 			Email:  acc.Email,
-			Name:   acc.Name,
+			Name:   acc.FirstName,
 			URL:    path.Join(rs.LoginAuth.loginURL, lt.Token),
 			Token:  lt.Token,
 			Expiry: lt.Expiry,
 		}
-		if err := rs.Mailer.LoginToken(acc.Name, acc.Email, content); err != nil {
+		if err := rs.Mailer.LoginToken(acc.FirstName, acc.Email, content); err != nil {
 			// log(r).WithField("module", "email").Error(err)
 		}
 	}()
@@ -155,57 +151,58 @@ func (rs *Resource) token(w http.ResponseWriter, r *http.Request) {
 	body := &tokenRequest{}
 	if err := render.Bind(r, body); err != nil {
 		// log(r).Warn(err)
-		render.Render(w, r, ErrUnauthorized(ErrLoginToken))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrLoginToken))
 		return
 	}
 
 	id, err := rs.LoginAuth.GetAccountID(body.Token)
 	if err != nil {
-		render.Render(w, r, ErrUnauthorized(ErrLoginToken))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrLoginToken))
 		return
 	}
 
 	acc, err := rs.Store.GetAccount(id)
 	if err != nil {
 		// account deleted before login token expired
-		render.Render(w, r, ErrUnauthorized(ErrUnknownLogin))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrUnknownLogin))
 		return
 	}
 
 	if !acc.CanLogin() {
-		render.Render(w, r, ErrUnauthorized(ErrLoginDisabled))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrLoginDisabled))
 		return
 	}
 
 	ua := user_agent.New(r.UserAgent())
 	browser, _ := ua.Browser()
 
-	token := &jwt.Token{
-		Token:      uuid.Must(uuid.NewV4()).String(),
-		Expiry:     time.Now().Add(rs.TokenAuth.JwtRefreshExpiry),
-		UpdatedAt:  time.Now(),
-		AccountID:  acc.ID,
-		Mobile:     ua.Mobile(),
-		Identifier: fmt.Sprintf("%s on %s", browser, ua.OS()),
+	token := &dbmodels.Token{
+		Token:               uuid.Must(uuid.NewV4()).String(),
+		Expiry:              time.Now().Add(rs.TokenAuth.JwtRefreshExpiry),
+		CreatedTimestampUTC: time.Now(),
+		UpdatedTimestampUTC: time.Now(),
+		AccountID:           acc.ID,
+		Mobile:              ua.Mobile(),
+		Identifier:          fmt.Sprintf("%s on %s", browser, ua.OS()),
 	}
 
 	if err := rs.Store.CreateOrUpdateToken(token); err != nil {
 		// log(r).Error(err)
-		render.Render(w, r, ErrInternalServerError)
+		render.Render(w, r, renderers.ErrorInternalServerError(err.Error()))
 		return
 	}
 
 	access, refresh, err := rs.TokenAuth.GenTokenPair(acc.Claims(), token.Claims())
 	if err != nil {
 		// log(r).Error(err)
-		render.Render(w, r, ErrInternalServerError)
+		render.Render(w, r, renderers.ErrorInternalServerError(err.Error()))
 		return
 	}
 
 	acc.LastLogin = time.Now()
 	if err := rs.Store.UpdateAccount(acc); err != nil {
 		// log(r).Error(err)
-		render.Render(w, r, ErrInternalServerError)
+		render.Render(w, r, renderers.ErrorInternalServerError(err.Error()))
 		return
 	}
 
@@ -220,24 +217,24 @@ func (rs *Resource) refresh(w http.ResponseWriter, r *http.Request) {
 
 	token, err := rs.Store.GetToken(rt)
 	if err != nil {
-		render.Render(w, r, ErrUnauthorized(jwt.ErrTokenExpired))
+		render.Render(w, r, renderers.ErrorUnauthorized(jwt.ErrTokenExpired))
 		return
 	}
 
 	if time.Now().After(token.Expiry) {
 		rs.Store.DeleteToken(token)
-		render.Render(w, r, ErrUnauthorized(jwt.ErrTokenExpired))
+		render.Render(w, r, renderers.ErrorUnauthorized(jwt.ErrTokenExpired))
 		return
 	}
 
 	acc, err := rs.Store.GetAccount(token.AccountID)
 	if err != nil {
-		render.Render(w, r, ErrUnauthorized(ErrUnknownLogin))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrUnknownLogin))
 		return
 	}
 
 	if !acc.CanLogin() {
-		render.Render(w, r, ErrUnauthorized(ErrLoginDisabled))
+		render.Render(w, r, renderers.ErrorUnauthorized(ErrLoginDisabled))
 		return
 	}
 
@@ -269,16 +266,4 @@ func (rs *Resource) refresh(w http.ResponseWriter, r *http.Request) {
 		Access:  access,
 		Refresh: refresh,
 	})
-}
-
-func (rs *Resource) logout(w http.ResponseWriter, r *http.Request) {
-	rt := jwt.RefreshTokenFromCtx(r.Context())
-	token, err := rs.Store.GetToken(rt)
-	if err != nil {
-		render.Render(w, r, ErrUnauthorized(jwt.ErrTokenExpired))
-		return
-	}
-	rs.Store.DeleteToken(token)
-
-	render.Respond(w, r, http.NoBody)
 }

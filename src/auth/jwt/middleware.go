@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"context"
-	"errors"
 	"net/http"
 
 	"github.com/go-chi/jwtauth"
@@ -38,12 +37,12 @@ func Authenticator(next http.Handler) http.Handler {
 
 		if err != nil {
 			// logging.GetLogEntry(r).Warn(err)
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token unauthorized")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidLogin))
 			return
 		}
 
 		if !token.Valid {
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token expired")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
 			return
 		}
 
@@ -52,7 +51,7 @@ func Authenticator(next http.Handler) http.Handler {
 		err = c.ParseClaims(claims)
 		if err != nil {
 			// logging.GetLogEntry(r).Error(err)
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("invalid access token")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
 			return
 		}
 
@@ -68,11 +67,11 @@ func AuthenticateRefreshJWT(next http.Handler) http.Handler {
 		token, claims, err := jwtauth.FromContext(r.Context())
 		if err != nil {
 			// logging.GetLogEntry(r).Warn(err)
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token unauthorized")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidLogin))
 			return
 		}
 		if !token.Valid {
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("token expired")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
 			return
 		}
 
@@ -81,7 +80,7 @@ func AuthenticateRefreshJWT(next http.Handler) http.Handler {
 		err = c.ParseClaims(claims)
 		if err != nil {
 			// logging.GetLogEntry(r).Error(err)
-			render.Render(w, r, renderers.ErrorUnauthorized(errors.New("invalid refresh token")))
+			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidRefreshToken))
 			return
 		}
 		// Set refresh token string on context
@@ -96,7 +95,7 @@ func RequiresRole(role recruitermodel.Role) func(next http.Handler) http.Handler
 		hfn := func(w http.ResponseWriter, r *http.Request) {
 			claims := ClaimsFromCtx(r.Context())
 			if !hasRole(role, claims.Roles) {
-				render.Render(w, r, renderers.ErrorForbidden(errors.New("token insufficient provoledges")))
+				render.Render(w, r, renderers.ErrorForbidden(authmodel.ErrInsufficientRights))
 				return
 			}
 			next.ServeHTTP(w, r)

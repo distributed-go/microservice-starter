@@ -37,11 +37,10 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	t := time.Now().UTC()
 	data.Recruiter.Roles = []recruitermodel.Role{recruitermodel.USER}
 	data.Recruiter.Active = true
-	data.Recruiter.CreatedTimestampUTC = &t
-	data.Recruiter.UpdatedTimestampUTC = &t
+	data.Recruiter.CreatedTimestampUTC = time.Now().UTC()
+	data.Recruiter.UpdatedTimestampUTC = time.Now().UTC()
 
 	if err := data.Validate(); err != nil {
 		switch err.(type) {
