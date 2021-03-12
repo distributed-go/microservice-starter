@@ -10,4 +10,10 @@ var (
 	ErrLoginToken          = errors.New("invalid or expired login token")
 	ErrInvalidRefreshToken = errors.New("invalid refresh token")
 	ErrInsufficientRights  = errors.New("token insufficient provoledges")
+	ErrServerError         = errors.New("Something went wrong please try again after some time")
+)
+
+// List of error codes used in authentication service/model
+var (
+	FailedToCreateAccessToken = "Failed-To-CreateAccess-Token"
 )

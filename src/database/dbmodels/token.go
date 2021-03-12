@@ -15,19 +15,21 @@ type Token struct {
 	UpdatedTimestampUTC time.Time          `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
 	AccountID           primitive.ObjectID `json:"-" bson:"AccountID,omitempty"`
 	Token               string             `json:"-" bson:"Token,omitempty"`
-	Expiry              time.Time          `json:"-" bson:"Expiry,omitempty"`
+	ExpiryTimestampUTC  time.Time          `json:"-" bson:"ExpiryTimestampUTC,omitempty"`
 	Mobile              bool               `json:"Mobile,omitempty" bson:"Mobile,omitempty"`
 	Identifier          string             `json:"Identifier,omitempty" bson:"Identifier,omitempty"`
+	Claimed             bool               `json:"Claimed" bson:"Claimed"`
+	UserAgent           string             `json:"UserAgent,omitempty" bson:"UserAgent,omitempty"`
 }
 
 // Validate validates struct
-func (t *Token) Validate() error {
+func (t Token) Validate() error {
 	return validation.ValidateStruct(&t,
 		validation.Field(&t.CreatedTimestampUTC, validation.Required),
 		validation.Field(&t.UpdatedTimestampUTC, validation.Required),
 		validation.Field(&t.AccountID, validation.Required),
 		validation.Field(&t.Token, validation.Required),
-		validation.Field(&t.Expiry, validation.Required),
+		validation.Field(&t.ExpiryTimestampUTC, validation.Required),
 		validation.Field(&t.Identifier, validation.Required),
 	)
 }

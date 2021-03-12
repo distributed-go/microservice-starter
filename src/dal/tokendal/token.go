@@ -26,18 +26,23 @@ func NewTokenDal() TokenDal {
 }
 
 // Create creates a new account.
-func (r *token) Create(txID string, account *dbmodels.Recruiter) (primitive.ObjectID, error) {
-	rc := r.db.Database().Collection(viper.GetString("db.recruiters_collection"))
+func (t *token) Create(txID string, token *dbmodels.Token) (*dbmodels.Token, error) {
+	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
 	ctx, cancel := context.WithTimeout(
 		context.Background(),
 		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
 	)
 	defer cancel()
 
-	insertResult, err := rc.InsertOne(ctx, account)
-	if err != nil {
-		return primitive.ObjectID{}, fmt.Errorf("Failed to create recruiter with error %v", err)
+	if err := token.Validate(); err != nil {
+		return nil, fmt.Errorf("Failed to create the access token with the error %v", err)
 	}
 
-	return insertResult.InsertedID.(primitive.ObjectID), nil
+	insertResult, err := tc.InsertOne(ctx, token)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to create recruiter with error %v", err)
+	}
+
+	token.ID = insertResult.InsertedID.(primitive.ObjectID)
+	return token, nil
 }

@@ -2,7 +2,6 @@ package mailer
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 
 	"github.com/jaytaylor/html2text"
@@ -33,7 +32,6 @@ type Mailer interface {
 
 // Parse parses the corresponding template and content
 func (m *MailboxEmail) Parse() error {
-	fmt.Printf("%+v \n", m)
 	buf := new(bytes.Buffer)
 	if err := templates.ExecuteTemplate(buf, m.Template, m.Content); err != nil {
 		return err
