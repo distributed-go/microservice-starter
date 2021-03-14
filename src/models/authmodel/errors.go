@@ -16,4 +16,5 @@ var (
 // List of error codes used in authentication service/model
 var (
 	FailedToCreateAccessToken = "Failed-To-CreateAccess-Token"
+	FailedToAuthenticateToken = "Failed-To-Authenticate-Token"
 )

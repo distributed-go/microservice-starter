@@ -26,6 +26,9 @@ func init() {
 		return err
 	}, func(db *mongo.Database) error { //Down
 		_, err := db.Collection(viper.GetString("db.recruiters_collection")).Indexes().DropOne(ctx, "FirstName_1")
+		if err != nil {
+			return err
+		}
 		_, err = db.Collection(viper.GetString("db.recruiters_collection")).Indexes().DropOne(ctx, "LastName_1")
 		return err
 	})

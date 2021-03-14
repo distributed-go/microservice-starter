@@ -65,6 +65,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	// =================  auth routes ======================
 	r.Post(v1Prefix+"/signup", router.recruiter.CreateRecruiter)
 	r.Post(v1Prefix+"/login", router.auth.Login)
+	r.Post(v1Prefix+"/authenticate", router.auth.Authenticate)
 
 	// =================  ping pong ======================
 	r.Get(v1Prefix+"/ping", func(w http.ResponseWriter, r *http.Request) {

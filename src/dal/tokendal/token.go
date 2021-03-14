@@ -10,6 +10,7 @@ import (
 	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type token struct {
@@ -45,4 +46,39 @@ func (t *token) Create(txID string, token *dbmodels.Token) (*dbmodels.Token, err
 
 	token.ID = insertResult.InsertedID.(primitive.ObjectID)
 	return token, nil
+}
+
+func (t *token) GetByUUID(uuid string) (*dbmodels.Token, error) {
+	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	var rec dbmodels.Token
+	if err := tc.FindOne(ctx, bson.M{"TokenUUID": uuid}).Decode(&rec); err != nil {
+		return nil, err
+	}
+
+	return &rec, nil
+}
+
+func (t *token) Update(token *dbmodels.Token) error {
+	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	if err := token.Validate(); err != nil {
+		return fmt.Errorf("Failed to create the access token with the error %v", err)
+	}
+
+	if _, err := tc.ReplaceOne(ctx, bson.M{"_id": token.ID}, token); err != nil {
+		return err
+	}
+
+	return nil
 }

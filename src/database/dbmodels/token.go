@@ -13,13 +13,16 @@ type Token struct {
 	ID                  primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
 	CreatedTimestampUTC time.Time          `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
 	UpdatedTimestampUTC time.Time          `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
-	AccountID           primitive.ObjectID `json:"-" bson:"AccountID,omitempty"`
-	Token               string             `json:"-" bson:"Token,omitempty"`
-	ExpiryTimestampUTC  time.Time          `json:"-" bson:"ExpiryTimestampUTC,omitempty"`
-	Mobile              bool               `json:"Mobile,omitempty" bson:"Mobile,omitempty"`
-	Identifier          string             `json:"Identifier,omitempty" bson:"Identifier,omitempty"`
-	Claimed             bool               `json:"Claimed" bson:"Claimed"`
-	UserAgent           string             `json:"UserAgent,omitempty" bson:"UserAgent,omitempty"`
+
+	ExpiryTimestampUTC time.Time          `json:"-" bson:"ExpiryTimestampUTC,omitempty"`
+	AccountID          primitive.ObjectID `json:"-" bson:"AccountID,omitempty"`
+	AccessToken        string             `json:"-" bson:"AccessToken,omitempty"`
+	ResfreshToken      string             `json:"-" bson:"ResfreshToken,omitempty"`
+	Claimed            bool               `json:"-" bson:"Claimed"`
+
+	Mobile    bool   `json:"Mobile,omitempty" bson:"Mobile,omitempty"`
+	TokenUUID string `json:"TokenUUID,omitempty" bson:"TokenUUID,omitempty"`
+	UserAgent string `json:"UserAgent,omitempty" bson:"UserAgent,omitempty"`
 }
 
 // Validate validates struct
@@ -27,10 +30,10 @@ func (t Token) Validate() error {
 	return validation.ValidateStruct(&t,
 		validation.Field(&t.CreatedTimestampUTC, validation.Required),
 		validation.Field(&t.UpdatedTimestampUTC, validation.Required),
-		validation.Field(&t.AccountID, validation.Required),
-		validation.Field(&t.Token, validation.Required),
 		validation.Field(&t.ExpiryTimestampUTC, validation.Required),
-		validation.Field(&t.Identifier, validation.Required),
+
+		validation.Field(&t.AccountID, validation.Required),
+		validation.Field(&t.TokenUUID, validation.Required),
 	)
 }
 
@@ -38,6 +41,6 @@ func (t Token) Validate() error {
 func (t *Token) Claims() authmodel.RefreshClaims {
 	return authmodel.RefreshClaims{
 		ID:    t.ID,
-		Token: t.Token,
+		Token: t.AccessToken,
 	}
 }
