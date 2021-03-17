@@ -56,14 +56,14 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	objectID, err := rs.recruiterDal.Create(txID, data.Recruiter)
+	_, err := rs.recruiterDal.Create(txID, data.Recruiter)
 	if err != nil {
 		rs.logger.Error(txID, "").Errorf("Failed to create recruiters record with error %v", err)
 		render.Render(w, r, renderers.ErrorInternalServerError("Failed to create recruiter account, please try again"))
 		return
 	}
 
-	data.Recruiter.ID = objectID
+	// data.Recruiter.ID = objectID
 	render.Respond(w, r, newRecruitersResponse(data.Recruiter))
 }
 

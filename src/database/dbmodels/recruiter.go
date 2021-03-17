@@ -19,8 +19,11 @@ type Recruiter struct {
 	Email               string                `json:"Email,omitempty" bson:"Email,omitempty"`
 	FirstName           string                `json:"FirstName,omitempty" bson:"FirstName,omitempty"`
 	LastName            string                `json:"LastName,omitempty" bson:"LastName,omitempty"`
+	Designation         string                `json:"Designation,omitempty" bson:"Designation,omitempty"`
 	Active              bool                  `json:"Active,omitempty" bson:"Active,omitempty"`
 	Roles               []recruitermodel.Role `json:"Roles,omitempty" bson:"Roles,omitempty"`
+	VerifiedAccount     bool                  `json:"VerifiedAccount,omitempty" bson:"VerifiedAccount,omitempty"`
+	SignUpCompleted     bool                  `json:"SignUpCompleted,omitempty" bson:"SignUpCompleted,omitempty"`
 }
 
 // Validate validates struct

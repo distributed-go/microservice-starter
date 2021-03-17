@@ -39,6 +39,15 @@ func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = as.loginWithAccount(acc, txID, r)
+	if err != nil {
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError.Error()))
+	}
+
+	render.Respond(w, r, http.NoBody)
+}
+
+func (as *authservice) loginWithAccount(acc *dbmodels.Recruiter, txID string, r *http.Request) error {
 	token := uuid.New().String()
 	ua := user_agent.New(r.UserAgent())
 	browser, _ := ua.Browser()
@@ -52,11 +61,10 @@ func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 		Mobile:              ua.Mobile(),
 	}
 
-	_, err = as.tokenDal.Create(txID, accessToken)
+	_, err := as.tokenDal.Create(txID, accessToken)
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToCreateAccessToken).Errorf("Failed to create access token with error %v", err)
-		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError.Error()))
-		return
+		return err
 	}
 
 	go func() {
@@ -72,5 +80,5 @@ func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	render.Respond(w, r, http.NoBody)
+	return nil
 }

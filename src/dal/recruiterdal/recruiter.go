@@ -27,7 +27,7 @@ func NewRecruiterDal() RecruiterDal {
 }
 
 // Create creates a new account.
-func (r *recruiter) Create(txID string, account *dbmodels.Recruiter) (primitive.ObjectID, error) {
+func (r *recruiter) Create(txID string, account *dbmodels.Recruiter) (*dbmodels.Recruiter, error) {
 	rc := r.db.Database().Collection(viper.GetString("db.recruiters_collection"))
 	ctx, cancel := context.WithTimeout(
 		context.Background(),
@@ -36,15 +36,16 @@ func (r *recruiter) Create(txID string, account *dbmodels.Recruiter) (primitive.
 	defer cancel()
 
 	if err := account.Validate(); err != nil {
-		return primitive.ObjectID{}, err
+		return nil, err
 	}
 
 	insertResult, err := rc.InsertOne(ctx, account)
 	if err != nil {
-		return primitive.ObjectID{}, fmt.Errorf("Failed to create recruiter with error %v", err)
+		return nil, fmt.Errorf("Failed to create recruiter with error %v", err)
 	}
 
-	return insertResult.InsertedID.(primitive.ObjectID), nil
+	account.ID = insertResult.InsertedID.(primitive.ObjectID)
+	return account, nil
 }
 
 func (r *recruiter) Update(recruiter *dbmodels.Recruiter) error {

@@ -63,7 +63,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	r.Get(viper.GetString("web.url_prefix")+"/health", router.health.GetHealth)
 
 	// =================  auth routes ======================
-	r.Post(v1Prefix+"/signup", router.recruiter.CreateRecruiter)
+	r.Post(v1Prefix+"/signup", router.auth.SignUp)
 	r.Post(v1Prefix+"/login", router.auth.Login)
 	r.Post(v1Prefix+"/authenticate", router.auth.Authenticate)
 
