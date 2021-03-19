@@ -1,7 +1,6 @@
 package jwt
 
 import (
-	"crypto/rand"
 	"net/http"
 	"time"
 
@@ -19,10 +18,6 @@ type tokenAuth struct {
 // NewTokenAuth configures and returns a JWT authentication instance.
 func NewTokenAuth() TokenAuth {
 	secret := viper.GetString("jwt.auth_jwt_secret")
-	if secret == "random" {
-		secret = randStringBytes(32)
-	}
-
 	a := &tokenAuth{
 		JwtAuth:          jwtauth.New("HS256", []byte(secret), nil),
 		JwtExpiry:        viper.GetDuration("jwt.auth_jwt_expiry"),
@@ -64,18 +59,4 @@ func (a *tokenAuth) CreateRefreshJWT(c authmodel.RefreshClaims) (string, error) 
 	c.ExpiresAt = time.Now().Add(a.JwtExpiry).Unix()
 	_, tokenString, err := a.JwtAuth.Encode(c)
 	return tokenString, err
-}
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-func randStringBytes(n int) string {
-	buf := make([]byte, n)
-	if _, err := rand.Read(buf); err != nil {
-		panic(err)
-	}
-
-	for k, v := range buf {
-		buf[k] = letterBytes[v%byte(len(letterBytes))]
-	}
-	return string(buf)
 }

@@ -3,9 +3,9 @@
 package router
 
 import (
-	"net/http"
 	"time"
 
+	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 	"github.com/jobbox-tech/recruiter-api/web/services/v1/authservice"
 
 	"github.com/jobbox-tech/recruiter-api/web/services/v1/recruiterservice"
@@ -24,6 +24,7 @@ type router struct {
 	health    health.Health
 	recruiter recruiterservice.RecruiterService
 	auth      authservice.AuthService
+	tokenAuth jwt.TokenAuth
 }
 
 // NewRouter returns the router implementation
@@ -33,11 +34,16 @@ func NewRouter() Router {
 		health:    health.NewHealth(),
 		recruiter: recruiterservice.NewRecruiterService(),
 		auth:      authservice.NewAuthService(),
+		tokenAuth: jwt.NewTokenAuth(),
 	}
 }
 
 // Router configures application resources and routes.
 func (router *router) Router(enableCORS bool) *chi.Mux {
+	// v1 URL router prefix
+	v1Prefix := viper.GetString("web.url_prefix") + viper.GetString("web.api_version_v1")
+
+	// ==================== Public Router ======================
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
@@ -47,17 +53,18 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 
 	// set up logging
 	r.Use(middlewares.NewLoggingMiddleware().Logger())
-
 	// settin up content-type
 	r.Use(render.SetContentType(render.ContentTypeJSON))
-
 	// use CORS middleware if client is not served by this api, e.g. from other domain or CDN
 	if enableCORS {
 		r.Use(corsConfig().Handler)
 	}
 
-	// v1 URL router prefix
-	v1Prefix := viper.GetString("web.url_prefix") + viper.GetString("web.api_version_v1")
+	// ==================== Private Router ========================
+	rprivate := chi.NewRouter()
+	rprivate.Use(router.tokenAuth.Verifier())
+	rprivate.Use(jwt.Authenticator)
+	r.Mount("/", rprivate)
 
 	// =================  health routes ======================
 	r.Get(viper.GetString("web.url_prefix")+"/health", router.health.GetHealth)
@@ -66,11 +73,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	r.Post(v1Prefix+"/signup", router.auth.SignUp)
 	r.Post(v1Prefix+"/login", router.auth.Login)
 	r.Post(v1Prefix+"/authenticate", router.auth.Authenticate)
-
-	// =================  ping pong ======================
-	r.Get(v1Prefix+"/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
-	})
+	rprivate.Post(v1Prefix+"/logout", router.auth.Logout)
 
 	return r
 }

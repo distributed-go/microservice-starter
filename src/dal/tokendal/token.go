@@ -3,6 +3,7 @@ package tokendal
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/jobbox-tech/recruiter-api/database/connection"
@@ -48,22 +49,6 @@ func (t *token) Create(txID string, token *dbmodels.Token) (*dbmodels.Token, err
 	return token, nil
 }
 
-func (t *token) GetByUUID(uuid string) (*dbmodels.Token, error) {
-	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
-	ctx, cancel := context.WithTimeout(
-		context.Background(),
-		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
-	)
-	defer cancel()
-
-	var rec dbmodels.Token
-	if err := tc.FindOne(ctx, bson.M{"TokenUUID": uuid}).Decode(&rec); err != nil {
-		return nil, err
-	}
-
-	return &rec, nil
-}
-
 func (t *token) Update(token *dbmodels.Token) error {
 	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
 	ctx, cancel := context.WithTimeout(
@@ -81,4 +66,35 @@ func (t *token) Update(token *dbmodels.Token) error {
 	}
 
 	return nil
+}
+
+func (t *token) DeleteByAccessToken(token string) error {
+	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	if _, err := tc.DeleteOne(ctx, bson.M{"AccessToken": strings.TrimSpace(token)}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *token) GetByUUID(uuid string) (*dbmodels.Token, error) {
+	tc := t.db.Database().Collection(viper.GetString("db.access_tokens_collection"))
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
+	)
+	defer cancel()
+
+	var rec dbmodels.Token
+	if err := tc.FindOne(ctx, bson.M{"TokenUUID": uuid}).Decode(&rec); err != nil {
+		return nil, err
+	}
+
+	return &rec, nil
 }

@@ -43,7 +43,7 @@ func (r *Recruiter) CanLogin() bool {
 // Claims returns the account's claims to be signed
 func (r *Recruiter) Claims() authmodel.AppClaims {
 	return authmodel.AppClaims{
-		ID:    r.ID,
+		ID:    r.ID.String(),
 		Sub:   r.Email,
 		Roles: r.Roles,
 	}

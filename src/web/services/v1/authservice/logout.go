@@ -3,17 +3,27 @@ package authservice
 import (
 	"net/http"
 
+	"github.com/jobbox-tech/recruiter-api/models/authmodel"
+	"github.com/jobbox-tech/recruiter-api/web/renderers"
+
+	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
 )
 
 func (as *authservice) Logout(w http.ResponseWriter, r *http.Request) {
-	// rt := jwt.RefreshTokenFromCtx(r.Context())
-	// token, err := as.Store.GetToken(rt)
-	// if err != nil {
-	// 	render.Render(w, r, ErrUnauthorized(jwt.ErrTokenExpired))
-	// 	return
-	// }
-	// as.Store.DeleteToken(token)
+	txID := r.Header["transaction_id"][0]
+
+	token, _, err := jwtauth.FromContext(r.Context())
+	if err != nil {
+		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
+		return
+	}
+
+	err = as.tokenDal.DeleteByAccessToken(token.Raw)
+	if err != nil {
+		as.logger.Error(authmodel.FailedToDeleteToken, txID).Errorf("Failed to delete access token with error %v", err)
+		render.Respond(w, r, http.NoBody)
+	}
 
 	render.Respond(w, r, http.NoBody)
 }

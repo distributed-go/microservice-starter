@@ -18,4 +18,5 @@ var (
 	FailedToCreateAccessToken = "Failed-To-CreateAccess-Token"
 	FailedToAuthenticateToken = "Failed-To-Authenticate-Token"
 	FailedToSignUp            = "Failed-To-Sign-Up"
+	FailedToDeleteToken       = "Failed-To-Delete-Token"
 )

@@ -34,9 +34,7 @@ func RefreshTokenFromCtx(ctx context.Context) string {
 func Authenticator(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, claims, err := jwtauth.FromContext(r.Context())
-
 		if err != nil {
-			// logging.GetLogEntry(r).Warn(err)
 			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidLogin))
 			return
 		}
@@ -50,7 +48,6 @@ func Authenticator(next http.Handler) http.Handler {
 		var c authmodel.AppClaims
 		err = c.ParseClaims(claims)
 		if err != nil {
-			// logging.GetLogEntry(r).Error(err)
 			render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
 			return
 		}
@@ -84,7 +81,7 @@ func AuthenticateRefreshJWT(next http.Handler) http.Handler {
 			return
 		}
 		// Set refresh token string on context
-		ctx := context.WithValue(r.Context(), ctxRefreshToken, c.Token)
+		ctx := context.WithValue(r.Context(), ctxRefreshToken, c.TokenUUID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

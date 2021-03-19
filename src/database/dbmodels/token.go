@@ -40,7 +40,7 @@ func (t Token) Validate() error {
 // Claims returns the token claims to be signed
 func (t *Token) Claims() authmodel.RefreshClaims {
 	return authmodel.RefreshClaims{
-		ID:    t.ID,
-		Token: t.AccessToken,
+		ID:        t.ID.String(),
+		TokenUUID: t.TokenUUID,
 	}
 }
