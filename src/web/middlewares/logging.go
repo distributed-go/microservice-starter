@@ -15,8 +15,8 @@ type logger struct {
 	logger logging.Logger
 }
 
-// NewLoggingMiddleware returns new logging middleware for http
-func NewLoggingMiddleware() LoggingMiddleware {
+// NewMiddlewares returns new logging middleware for http
+func NewMiddlewares() Middlewares {
 	return &logger{
 		logger: logging.NewLogger(),
 	}

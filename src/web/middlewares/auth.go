@@ -1,4 +1,4 @@
-package jwt
+package middlewares
 
 import (
 	"context"
@@ -19,19 +19,19 @@ const (
 )
 
 // ClaimsFromCtx retrieves the parsed AppClaims from request context.
-func ClaimsFromCtx(ctx context.Context) authmodel.AppClaims {
+func (l *logger) ClaimsFromCtx(ctx context.Context) authmodel.AppClaims {
 	return ctx.Value(ctxClaims).(authmodel.AppClaims)
 }
 
 // RefreshTokenFromCtx retrieves the parsed refresh token from context.
-func RefreshTokenFromCtx(ctx context.Context) string {
+func (l *logger) RefreshTokenFromCtx(ctx context.Context) string {
 	return ctx.Value(ctxRefreshToken).(string)
 }
 
 // Authenticator is a default authentication middleware to enforce access from the
 // Verifier middleware request context values. The Authenticator sends a 401 Unauthorized
 // response for any unverified tokens and passes the good ones through.
-func Authenticator(next http.Handler) http.Handler {
+func (l *logger) Authenticator(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, claims, err := jwtauth.FromContext(r.Context())
 		if err != nil {
@@ -59,7 +59,7 @@ func Authenticator(next http.Handler) http.Handler {
 }
 
 // AuthenticateRefreshJWT checks validity of refresh tokens and is only used for access token refresh and logout requests. It responds with 401 Unauthorized for invalid or expired refresh tokens.
-func AuthenticateRefreshJWT(next http.Handler) http.Handler {
+func (l *logger) AuthenticateRefreshJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, claims, err := jwtauth.FromContext(r.Context())
 		if err != nil {
@@ -87,10 +87,10 @@ func AuthenticateRefreshJWT(next http.Handler) http.Handler {
 }
 
 // RequiresRole middleware restricts access to accounts having role parameter in their jwt claims.
-func RequiresRole(role recruitermodel.Role) func(next http.Handler) http.Handler {
+func (l *logger) RequiresRole(role recruitermodel.Role) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		hfn := func(w http.ResponseWriter, r *http.Request) {
-			claims := ClaimsFromCtx(r.Context())
+			claims := l.ClaimsFromCtx(r.Context())
 			if !hasRole(role, claims.Roles) {
 				render.Render(w, r, renderers.ErrorForbidden(authmodel.ErrInsufficientRights))
 				return

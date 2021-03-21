@@ -20,21 +20,23 @@ import (
 )
 
 type router struct {
-	logger    logging.Logger
-	health    health.Health
-	recruiter recruiterservice.RecruiterService
-	auth      authservice.AuthService
-	tokenAuth jwt.TokenAuth
+	logger      logging.Logger
+	health      health.Health
+	recruiter   recruiterservice.RecruiterService
+	auth        authservice.AuthService
+	tokenAuth   jwt.TokenAuth
+	middlewares middlewares.Middlewares
 }
 
 // NewRouter returns the router implementation
 func NewRouter() Router {
 	return &router{
-		logger:    logging.NewLogger(),
-		health:    health.NewHealth(),
-		recruiter: recruiterservice.NewRecruiterService(),
-		auth:      authservice.NewAuthService(),
-		tokenAuth: jwt.NewTokenAuth(),
+		logger:      logging.NewLogger(),
+		health:      health.NewHealth(),
+		recruiter:   recruiterservice.NewRecruiterService(),
+		auth:        authservice.NewAuthService(),
+		tokenAuth:   jwt.NewTokenAuth(),
+		middlewares: middlewares.NewMiddlewares(),
 	}
 }
 
@@ -52,7 +54,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	r.Use(middleware.Timeout(time.Duration(viper.GetInt("web.request_timeout_in_sec")) * time.Second))
 
 	// set up logging
-	r.Use(middlewares.NewLoggingMiddleware().Logger())
+	r.Use(router.middlewares.Logger())
 	// settin up content-type
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 	// use CORS middleware if client is not served by this api, e.g. from other domain or CDN
@@ -63,7 +65,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	// ==================== Private Router ========================
 	rprivate := chi.NewRouter()
 	rprivate.Use(router.tokenAuth.Verifier())
-	rprivate.Use(jwt.Authenticator)
+	rprivate.Use(router.middlewares.Authenticator)
 	r.Mount("/", rprivate)
 
 	// =================  health routes ======================
