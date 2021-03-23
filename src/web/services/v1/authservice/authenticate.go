@@ -18,7 +18,7 @@ func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 	body := &authinterface.AuthenticateReqInterface{}
 	if err := render.Bind(r, body); err != nil {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to read the request body with error %v", err)
-		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
+		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrIncorrectDetails))
 		return
 	}
 
@@ -34,7 +34,7 @@ func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 	acc, err := as.recruiterDal.GetByID(token.AccountID)
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to recruiter from database with error %v", err)
-		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrUnknownLogin))
+		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginToken))
 		return
 	}
 
@@ -53,7 +53,7 @@ func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 	access, refresh, err := as.tokenAuth.GenTokenPair(acc.Claims(), token.Claims())
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to generate token with error %v", err)
-		render.Render(w, r, renderers.ErrorInternalServerError(""))
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 		return
 	}
 
@@ -70,7 +70,7 @@ func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 
 	if err := as.tokenDal.Update(token); err != nil {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to update token details with error %v", err)
-		render.Render(w, r, renderers.ErrorInternalServerError(""))
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 		return
 	}
 

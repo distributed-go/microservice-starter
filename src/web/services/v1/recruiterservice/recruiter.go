@@ -9,7 +9,6 @@ import (
 	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
 
 	"github.com/go-chi/render"
-	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 
@@ -33,7 +32,7 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 	txID := r.Header["transaction_id"][0]
 	data := &recruitersRequest{}
 	if err := render.Bind(r, data); err != nil {
-		render.Render(w, r, renderers.ErrorInvalidRequest(err, "Invalid request body"))
+		render.Render(w, r, renderers.ErrorInvalidRequest(err))
 		return
 	}
 
@@ -42,24 +41,10 @@ func (rs *recruiterservice) CreateRecruiter(w http.ResponseWriter, r *http.Reque
 	data.Recruiter.CreatedTimestampUTC = time.Now().UTC()
 	data.Recruiter.UpdatedTimestampUTC = time.Now().UTC()
 
-	if err := data.Validate(); err != nil {
-		switch err.(type) {
-		case validation.Errors:
-			render.Render(w, r, renderers.ErrorValidation(
-				errors.New("Failed to validate the data provided in body"),
-				err.(validation.Errors),
-				"Incorrect details provided, please provide correct details",
-			))
-			return
-		}
-		render.Render(w, r, renderers.ErrorInvalidRequest(err, "Invalid request body"))
-		return
-	}
-
 	_, err := rs.recruiterDal.Create(txID, data.Recruiter)
 	if err != nil {
 		rs.logger.Error(txID, "").Errorf("Failed to create recruiters record with error %v", err)
-		render.Render(w, r, renderers.ErrorInternalServerError("Failed to create recruiter account, please try again"))
+		render.Render(w, r, renderers.ErrorInternalServerError(errors.New("Failed to create recruiter account, please try again")))
 		return
 	}
 

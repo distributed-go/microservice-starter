@@ -41,7 +41,7 @@ func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 
 	err = as.loginWithAccount(acc, txID, r)
 	if err != nil {
-		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError.Error()))
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 	}
 
 	render.Respond(w, r, http.NoBody)

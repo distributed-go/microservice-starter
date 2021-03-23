@@ -8,22 +8,19 @@ import (
 
 	"github.com/jobbox-tech/recruiter-api/database/connection"
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
-	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type token struct {
-	log logging.Logger
-	db  connection.MongoStore
+	db connection.MongoStore
 }
 
 // NewTokenDal ...
 func NewTokenDal() TokenDal {
 	return &token{
-		log: logging.NewLogger(),
-		db:  connection.NewMongoStore(),
+		db: connection.NewMongoStore(),
 	}
 }
 

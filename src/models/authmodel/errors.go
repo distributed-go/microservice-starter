@@ -4,13 +4,14 @@ import "errors"
 
 // The list of error types presented to the end user as error message.
 var (
-	ErrInvalidLogin        = errors.New("invalid email address")
+	ErrInvalidLogin        = errors.New("Incorrect email address provided")
 	ErrUnknownLogin        = errors.New("email not registered")
-	ErrLoginDisabled       = errors.New("login for account disabled")
-	ErrLoginToken          = errors.New("invalid or expired login token")
-	ErrInvalidRefreshToken = errors.New("invalid refresh token")
-	ErrInsufficientRights  = errors.New("token insufficient provoledges")
-	ErrServerError         = errors.New("Something went wrong please try again after some time")
+	ErrLoginDisabled       = errors.New("Login for this account has been disabled")
+	ErrLoginToken          = errors.New("Invalid or expired login token provided")
+	ErrInvalidRefreshToken = errors.New("Invalid refresh token")
+	ErrInsufficientRights  = errors.New("token insufficient proviledges")
+	ErrServerError         = errors.New("Something went wrong, please try again")
+	ErrIncorrectDetails    = errors.New("Incorrect details provided, please provide correct details")
 )
 
 // List of error codes used in authentication service/model

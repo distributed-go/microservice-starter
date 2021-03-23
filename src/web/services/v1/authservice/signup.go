@@ -17,7 +17,7 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 	data := &authinterface.SignUpReqInterface{}
 	if err := render.Bind(r, data); err != nil {
-		render.Render(w, r, renderers.ErrorInvalidRequest(err, "Invalid request body"))
+		render.Render(w, r, renderers.ErrorInvalidRequest(authmodel.ErrIncorrectDetails))
 		return
 	}
 
@@ -33,13 +33,13 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	acc, err := as.recruiterDal.Create(txID, recruiter)
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to create recruiter record with error %v", err)
-		render.Render(w, r, renderers.ErrorInternalServerError("Failed to create recruiter account, please try again"))
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 		return
 	}
 
 	err = as.loginWithAccount(acc, txID, r)
 	if err != nil {
-		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError.Error()))
+		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 	}
 
 	render.Respond(w, r, http.NoBody)
