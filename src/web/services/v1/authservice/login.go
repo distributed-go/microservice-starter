@@ -23,19 +23,19 @@ func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 	body := &authinterface.LoginReqInterface{}
 	if err := render.Bind(r, body); err != nil {
 		as.logger.Error(txID, authmodel.FailedToCreateAccessToken).Error(err)
-		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidLogin))
+		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrInvalidLogin))
 		return
 	}
 
 	acc, err := as.recruiterDal.GetByEmail(body.Email)
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToCreateAccessToken).Error(err)
-		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrInvalidLogin))
+		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrUnknownLogin))
 		return
 	}
 
 	if !acc.CanLogin() {
-		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrLoginDisabled))
+		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrLoginDisabled))
 		return
 	}
 

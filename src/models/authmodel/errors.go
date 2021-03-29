@@ -5,7 +5,7 @@ import "errors"
 // The list of error types presented to the end user as error message.
 var (
 	ErrInvalidLogin        = errors.New("Incorrect email address provided")
-	ErrUnknownLogin        = errors.New("email not registered")
+	ErrUnknownLogin        = errors.New("We could not found any account for given email address")
 	ErrLoginDisabled       = errors.New("Login for this account has been disabled")
 	ErrLoginToken          = errors.New("Invalid or expired login token provided")
 	ErrInvalidRefreshToken = errors.New("Invalid refresh token")
