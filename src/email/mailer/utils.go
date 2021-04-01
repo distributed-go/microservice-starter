@@ -39,8 +39,11 @@ func formatAsDuration(t time.Time) string {
 
 	v := ""
 	if hours != 0 {
-		v += strconv.Itoa(hours) + " hours and "
+		v = strconv.Itoa(hours)
 	}
-	v += strconv.Itoa(mins) + " minutes"
+	if mins > 0 {
+		hours++
+		v = strconv.Itoa(hours)
+	}
 	return v
 }
