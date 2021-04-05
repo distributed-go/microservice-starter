@@ -5,7 +5,7 @@
     "service_started_timestamp_utc": "0001-01-01T00:00:00Z",
 
     "website": {
-        "domain_name": "https://recruiter.jobbox.ai",
+        "domain_name": "https://enterprise.jobbox.ai",
         "auth_login_url": "/start-session",
         "product_name": "Jobbox"
     },
