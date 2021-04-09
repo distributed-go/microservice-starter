@@ -39,18 +39,17 @@
         "auth_jwt_secret": "secret", 
         "auth_login_token_expiry" : "24h"
     },
-    "db_debug":false,
-    "logging": {
-        "text_logging": false,
-        "log_level": "DEBUG",
-        "log_filename": "platform-recruiter-api.log"
-    },
-    "mail": {
+    "email": {
 		"smtp_host": "smtp.gmail.com",
-		"smtp_port": "465",
+		"smtp_port": 465,
 		"smtp_user": "noreply@jobbox.ai",
         "smtp_password": "MonsterVirus@21052016",
         "from_name": "Jobbox Tech",
         "from_address": "noreply@jobbox.ai"
+    },
+    "logging": {
+        "text_logging": false,
+        "log_level": "DEBUG",
+        "log_filename": "platform-recruiter-api.log"
     }
 }

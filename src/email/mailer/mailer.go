@@ -20,10 +20,10 @@ func NewMailer() Mailer {
 	}
 	return &mailerImpl{
 		client: mail.NewPlainDialer(
-			viper.GetString("mail.smtp_host"),
-			viper.GetInt("mail.smtp_port"),
-			viper.GetString("mail.smtp_user"),
-			viper.GetString("mail.smtp_password"),
+			viper.GetString("email.smtp_host"),
+			viper.GetInt("email.smtp_port"),
+			viper.GetString("email.smtp_user"),
+			viper.GetString("email.smtp_password"),
 		),
 	}
 }

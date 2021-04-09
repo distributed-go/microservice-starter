@@ -21,7 +21,7 @@ func NewAuthEmail() AuthEmail {
 // SendLoginEmail creates and sends a login token email with provided template content.
 func (m *authEmail) SendLoginEmail(to mailer.Recipient, content LoginEmail) error {
 	msg := &mailer.MailboxEmail{
-		From:     mailer.Recipient{Name: viper.GetString("mail.from_name"), Address: viper.GetString("mail.from_address")},
+		From:     mailer.Recipient{Name: viper.GetString("email.from_name"), Address: viper.GetString("email.from_address")},
 		To:       to,
 		Subject:  fmt.Sprintf("Login To %s Recruitment Platform", viper.GetString("website.product_name")),
 		Template: "loginToken",

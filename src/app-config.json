@@ -5,7 +5,7 @@
     "service_started_timestamp_utc": "0001-01-01T00:00:00Z",
 
     "website": {
-        "domain_name": "https://recruiter.jobbox.ai/",
+        "domain_name": "https://recruiter.jobbox.ai",
         "auth_login_url": "/start-session",
         "product_name": "Jobbox"
     },
@@ -45,9 +45,9 @@
         "log_level": "DEBUG",
         "log_filename": "platform-recruiter-api.log"
     },
-    "mail": {
+    "email": {
 		"smtp_host": "smtp.gmail.com",
-		"smtp_port": "465",
+		"smtp_port": 465,
 		"smtp_user": "noreply@jobbox.ai",
         "smtp_password": "MonsterVirus@21052016",
         "from_name": "Jobbox Tech",
