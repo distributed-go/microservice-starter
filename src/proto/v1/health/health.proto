@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package v1.healthpb;
+option go_package = "github.com/jobbox-tech/recruiter-api/src/proto/v1/health/v1healthpb";
+
+enum ConnectionStatus {
+	Disconnected = 0; // internet is disconneced
+	Active = 1; // internet is connected
+}
+
+enum ServiceStatus {
+	Stopped = 0; // service stopped
+	Running = 1; // service running
+	Degraded = 2; // service heath is degraded
+}
+
+message Health {
+	string timestamp_utc = 1; // current timestamp in utc
+	string service_name = 2; // service name
+	string service_provider = 3; // service provider name
+	string service_version = 4; // service version
+	ServiceStatus service_status = 5; // service status
+	string service_start_time_utc = 6; // service start time in utc 
+	double uptime = 7; // service uptime in utc
+	repeated InboundConnection inbound_connections = 8; // inbound connections list
+	repeated OutboundConnection outbound_connections = 9; // outbound connections list
+}
+
+message InboundConnection  {
+	string application_name = 1; // name of the application
+	ConnectionStatus connection_status = 2; // connectins status of the application
+	string timestamp_utc = 3;   // current timestamp in utc
+	string hostname = 4; // hostname 
+	string address = 5; // ip address of the application      
+	string os = 6; // OS   
+}
+
+message OutboundConnection {
+	string application_name  = 1; // applcition name
+	string timestamp_utc = 2; // current timestamp in utc
+	repeated string urls = 3; // connection urls
+	ConnectionStatus connection_status = 4; // connection status of application
+}
