@@ -1,7 +1,7 @@
 package connection
 
 import (
-	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1healthpb"
+	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1health"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -14,5 +14,5 @@ const (
 type MongoStore interface {
 	Client() *mongo.Client
 	Database() *mongo.Database
-	Health() *v1healthpb.OutboundConnection
+	Health() *v1health.OutboundConnection
 }

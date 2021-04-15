@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1healthpb"
+	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1health"
 
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
@@ -76,14 +76,14 @@ func (s *mongoStore) initialize() (a *mongo.Database, b *mongo.Client) {
 	return db, client
 }
 
-func (s *mongoStore) Health() *v1healthpb.OutboundConnection {
+func (s *mongoStore) Health() *v1health.OutboundConnection {
 	once.Do(func() {
 		db, client = s.initialize()
 	})
 
-	outbound := &v1healthpb.OutboundConnection{}
+	outbound := &v1health.OutboundConnection{}
 	outbound.TimestampUtc = time.Now().UTC().String()
-	outbound.ConnectionStatus = v1healthpb.ConnectionStatus_Active
+	outbound.ConnectionStatus = v1health.ConnectionStatus_Active
 	outbound.ApplicationName = "MongoDB"
 	outbound.Urls = []string{viper.GetString("db.host")}
 
@@ -95,7 +95,7 @@ func (s *mongoStore) Health() *v1healthpb.OutboundConnection {
 
 	err := client.Ping(ctx, readpref.Primary())
 	if err != nil {
-		outbound.ConnectionStatus = v1healthpb.ConnectionStatus_Disconnected
+		outbound.ConnectionStatus = v1health.ConnectionStatus_Disconnected
 	}
 
 	return outbound

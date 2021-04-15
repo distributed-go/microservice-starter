@@ -3,111 +3,37 @@
 
 ## Table of Contents
 
-- [health.proto](#health.proto)
-    - [Health](#v1.v1health.Health)
-    - [InboundConnection](#v1.v1health.InboundConnection)
-    - [OutboundConnection](#v1.v1health.OutboundConnection)
-  
-    - [ConnectionStatus](#v1.v1health.ConnectionStatus)
-    - [ServiceStatus](#v1.v1health.ServiceStatus)
+- [error.proto](#error.proto)
+    - [ErrorResponse](#v1.error.ErrorResponse)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="health.proto"></a>
+<a name="error.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## health.proto
+## error.proto
 
 
 
-<a name="v1.v1health.Health"></a>
+<a name="v1.error.ErrorResponse"></a>
 
-### Health
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| timestamp_utc | [string](#string) |  | current timestamp in utc |
-| service_name | [string](#string) |  | service name |
-| service_provider | [string](#string) |  | service provider name |
-| service_version | [string](#string) |  | service version |
-| service_status | [ServiceStatus](#v1.v1health.ServiceStatus) |  | service status |
-| service_start_time_utc | [string](#string) |  | service start time in utc |
-| uptime | [double](#double) |  | service uptime in utc |
-| inbound_connections | [InboundConnection](#v1.v1health.InboundConnection) | repeated | inbound connections list |
-| outbound_connections | [OutboundConnection](#v1.v1health.OutboundConnection) | repeated | outbound connections list |
-
-
-
-
-
-
-<a name="v1.v1health.InboundConnection"></a>
-
-### InboundConnection
+### ErrorResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| application_name | [string](#string) |  | name of the application |
-| connection_status | [ConnectionStatus](#v1.v1health.ConnectionStatus) |  | connectins status of the application |
-| timestamp_utc | [string](#string) |  | current timestamp in utc |
-| hostname | [string](#string) |  | hostname |
-| address | [string](#string) |  | ip address of the application |
-| os | [string](#string) |  | OS |
-
-
-
-
-
-
-<a name="v1.v1health.OutboundConnection"></a>
-
-### OutboundConnection
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| application_name | [string](#string) |  | applcition name |
-| timestamp_utc | [string](#string) |  | current timestamp in utc |
-| urls | [string](#string) | repeated | connection urls |
-| connection_status | [ConnectionStatus](#v1.v1health.ConnectionStatus) |  | connection status of application |
+| StatusText | [string](#string) |  | user-level status message |
+| Code | [int32](#int32) |  | application-specific error code |
+| Error | [string](#string) |  | application-level error message, for debugging |
 
 
 
 
 
  
-
-
-<a name="v1.v1health.ConnectionStatus"></a>
-
-### ConnectionStatus
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| Disconnected | 0 | internet is disconneced |
-| Active | 1 | internet is connected |
-
-
-
-<a name="v1.v1health.ServiceStatus"></a>
-
-### ServiceStatus
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| Stopped | 0 | service stopped |
-| Running | 1 | service running |
-| Degraded | 2 | service heath is degraded |
-
 
  
 

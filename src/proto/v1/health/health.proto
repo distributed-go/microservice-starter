@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package v1.healthpb;
-option go_package = "github.com/jobbox-tech/recruiter-api/src/proto/v1/health/v1healthpb";
+package v1.v1health;
+option go_package = "github.com/jobbox-tech/recruiter-api/src/proto/v1/health/v1health";
 
 enum ConnectionStatus {
 	Disconnected = 0; // internet is disconneced

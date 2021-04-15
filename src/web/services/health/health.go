@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1healthpb"
+	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1health"
 	"github.com/spf13/viper"
 )
 
@@ -32,17 +32,17 @@ func NewHealth() Health {
 func (h *health) GetHealth(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 
-	healthStatus := v1healthpb.Health{}
+	healthStatus := v1health.Health{}
 	healthStatus.ServiceName = viper.GetString("service_name")
 	healthStatus.ServiceProvider = viper.GetString("service_provider")
 	healthStatus.ServiceVersion = viper.GetString("service_version")
 	healthStatus.TimestampUtc = time.Now().UTC().String()
-	healthStatus.ServiceStatus = v1healthpb.ServiceStatus_Running
+	healthStatus.ServiceStatus = v1health.ServiceStatus_Running
 	healthStatus.ServiceStartTimeUtc = viper.GetTime("service_started_timestamp_utc").String()
 	healthStatus.Uptime = time.Since(viper.GetTime("service_started_timestamp_utc")).Hours()
 
-	inbound := []*v1healthpb.InboundConnection{}
-	outbound := []*v1healthpb.OutboundConnection{}
+	inbound := []*v1health.InboundConnection{}
+	outbound := []*v1health.OutboundConnection{}
 
 	// add mongo connection status
 	mongo := h.db.Health()
@@ -51,17 +51,17 @@ func (h *health) GetHealth(w http.ResponseWriter, r *http.Request) {
 	// add internal server details
 	name, _ := os.Hostname()
 
-	server := v1healthpb.InboundConnection{}
+	server := v1health.InboundConnection{}
 	server.Hostname = name
 	server.Os = runtime.GOOS
 	server.TimestampUtc = time.Now().UTC().String()
 	server.ApplicationName = viper.GetString("service_name")
-	server.ConnectionStatus = v1healthpb.ConnectionStatus_Active
+	server.ConnectionStatus = v1health.ConnectionStatus_Active
 
 	exIP, err := externalIP()
 	if err != nil {
 		h.logger.Error(txID, FailedToObtainOutboundIP).Error("Failed to obtain inbound ip address with error %v", err)
-		server.ConnectionStatus = v1healthpb.ConnectionStatus_Disconnected
+		server.ConnectionStatus = v1health.ConnectionStatus_Disconnected
 	}
 	server.Address = exIP
 	inbound = append(inbound, &server)
