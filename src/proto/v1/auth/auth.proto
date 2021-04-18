@@ -1,0 +1,9 @@
+
+syntax = "proto3";
+
+package v1.auth;
+option go_package = "github.com/jobbox-tech/recruiter-api/src/proto/v1/error/v1auth";
+
+import "google/api/field_behavior.proto";
+
+message ErrorResponse {}
