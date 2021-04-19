@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
-
 	"github.com/go-chi/render"
 	"github.com/google/uuid"
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
@@ -20,7 +18,7 @@ import (
 
 func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
-	body := &authinterface.LoginReqInterface{}
+	body := &loginRequest{}
 	if err := render.Bind(r, body); err != nil {
 		as.logger.Error(txID, authmodel.FailedToCreateAccessToken).Error(err)
 		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrInvalidLogin))

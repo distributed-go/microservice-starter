@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
 
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/models/authmodel"
@@ -15,7 +14,7 @@ import (
 
 func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
-	data := &authinterface.SignUpReqInterface{}
+	data := &signupRequest{}
 	if err := render.Bind(r, data); err != nil {
 		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrIncorrectDetails))
 		return
