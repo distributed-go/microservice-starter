@@ -1,0 +1,191 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Recruiter API Documentation",
+        "title": "Recruiter API Documentation",
+        "contact": {
+            "name": "API Support",
+            "url": "http://jobbox.ai",
+            "email": "hello@jobbox.ai"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0"
+    },
+    "host": "localhost:8001",
+    "basePath": "/recruiter-api/v1",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "It returns the health of the service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Get health of the service",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1health.Health"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "v1error.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "description": "application-specific error code",
+                    "type": "integer"
+                },
+                "Error": {
+                    "description": "application-level error message, for debugging",
+                    "type": "string"
+                },
+                "StatusText": {
+                    "description": "user-level status message",
+                    "type": "string"
+                }
+            }
+        },
+        "v1health.Health": {
+            "type": "object",
+            "properties": {
+                "inbound_connections": {
+                    "description": "inbound connections list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1health.InboundConnection"
+                    }
+                },
+                "outbound_connections": {
+                    "description": "outbound connections list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1health.OutboundConnection"
+                    }
+                },
+                "service_name": {
+                    "description": "service name",
+                    "type": "string"
+                },
+                "service_provider": {
+                    "description": "service provider name",
+                    "type": "string"
+                },
+                "service_start_time_utc": {
+                    "description": "service start time in utc",
+                    "type": "string"
+                },
+                "service_status": {
+                    "description": "service status",
+                    "type": "integer"
+                },
+                "service_version": {
+                    "description": "service version",
+                    "type": "string"
+                },
+                "timestamp_utc": {
+                    "description": "current timestamp in utc",
+                    "type": "string"
+                },
+                "uptime": {
+                    "description": "service uptime in utc",
+                    "type": "number"
+                }
+            }
+        },
+        "v1health.InboundConnection": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "ip address of the application",
+                    "type": "string"
+                },
+                "application_name": {
+                    "description": "name of the application",
+                    "type": "string"
+                },
+                "connection_status": {
+                    "description": "connectins status of the application",
+                    "type": "integer"
+                },
+                "hostname": {
+                    "description": "hostname",
+                    "type": "string"
+                },
+                "os": {
+                    "description": "OS",
+                    "type": "string"
+                },
+                "timestamp_utc": {
+                    "description": "current timestamp in utc",
+                    "type": "string"
+                }
+            }
+        },
+        "v1health.OutboundConnection": {
+            "type": "object",
+            "properties": {
+                "application_name": {
+                    "description": "applcition name",
+                    "type": "string"
+                },
+                "connection_status": {
+                    "description": "connection status of application",
+                    "type": "integer"
+                },
+                "timestamp_utc": {
+                    "description": "current timestamp in utc",
+                    "type": "string"
+                },
+                "urls": {
+                    "description": "connection urls",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

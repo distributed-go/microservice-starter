@@ -24,7 +24,8 @@
         "exposed_headers":   ["Link"],
         "allow_credentials": true,
         "max_age":           86400,
-        "request_timeout_in_sec": 60
+        "request_timeout_in_sec": 60,
+        "show_api_docs": true
     },
     "db": {
         "host": "mongodb://localhost:27017",

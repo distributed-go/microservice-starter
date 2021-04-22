@@ -1,0 +1,134 @@
+basePath: /recruiter-api/v1
+definitions:
+  v1error.ErrorResponse:
+    properties:
+      Code:
+        description: application-specific error code
+        type: integer
+      Error:
+        description: application-level error message, for debugging
+        type: string
+      StatusText:
+        description: user-level status message
+        type: string
+    type: object
+  v1health.Health:
+    properties:
+      inbound_connections:
+        description: inbound connections list
+        items:
+          $ref: '#/definitions/v1health.InboundConnection'
+        type: array
+      outbound_connections:
+        description: outbound connections list
+        items:
+          $ref: '#/definitions/v1health.OutboundConnection'
+        type: array
+      service_name:
+        description: service name
+        type: string
+      service_provider:
+        description: service provider name
+        type: string
+      service_start_time_utc:
+        description: service start time in utc
+        type: string
+      service_status:
+        description: service status
+        type: integer
+      service_version:
+        description: service version
+        type: string
+      timestamp_utc:
+        description: current timestamp in utc
+        type: string
+      uptime:
+        description: service uptime in utc
+        type: number
+    type: object
+  v1health.InboundConnection:
+    properties:
+      address:
+        description: ip address of the application
+        type: string
+      application_name:
+        description: name of the application
+        type: string
+      connection_status:
+        description: connectins status of the application
+        type: integer
+      hostname:
+        description: hostname
+        type: string
+      os:
+        description: OS
+        type: string
+      timestamp_utc:
+        description: current timestamp in utc
+        type: string
+    type: object
+  v1health.OutboundConnection:
+    properties:
+      application_name:
+        description: applcition name
+        type: string
+      connection_status:
+        description: connection status of application
+        type: integer
+      timestamp_utc:
+        description: current timestamp in utc
+        type: string
+      urls:
+        description: connection urls
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:8001
+info:
+  contact:
+    email: hello@jobbox.ai
+    name: API Support
+    url: http://jobbox.ai
+  description: Recruiter API Documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Recruiter API Documentation
+  version: "2.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: It returns the health of the service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1health.Health'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Get health of the service
+      tags:
+      - health
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"

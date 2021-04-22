@@ -5,6 +5,7 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aokoli/goutils v1.1.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/aws/aws-sdk-go v1.34.32 // indirect
@@ -16,6 +17,8 @@ require (
 	github.com/go-chi/jwtauth v4.0.4+incompatible
 	github.com/go-chi/render v1.0.1
 	github.com/go-mail/mail v2.3.1+incompatible
+	github.com/go-openapi/spec v0.19.9 // indirect
+	github.com/go-openapi/swag v0.19.9 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-ozzo/ozzo-validation/v4 v4.2.2 // indirect
 	github.com/go-pg/pg v7.1.7+incompatible
@@ -30,6 +33,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jobbox-tech/mongomigrate v0.2.2-0.20200927090437-d55feef9c0dd
 	github.com/klauspost/compress v1.11.0 // indirect
+	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/mssola/user_agent v0.5.1
@@ -42,11 +46,15 @@ require (
 	github.com/spf13/cobra v0.0.6
 	github.com/spf13/viper v1.6.2
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
+	github.com/swaggo/http-swagger v0.0.0-20200308142732-58ac5e232fba
+	github.com/swaggo/swag v1.6.7
+	github.com/urfave/cli/v2 v2.2.0 // indirect
 	github.com/vanng822/css v0.1.0 // indirect
 	github.com/vanng822/go-premailer v0.0.0-20191214114701-be27abe028fe
 	go.mongodb.org/mongo-driver v1.4.1
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0 // indirect
-	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208 // indirect
+	golang.org/x/net v0.0.0-20201006153459-a7d1128ccaa0 // indirect
+	golang.org/x/tools v0.0.0-20201006183945-23a3aa10a23c // indirect
 	google.golang.org/genproto v0.0.0-20201002142447-3860012362da // indirect
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect

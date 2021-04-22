@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1health"
+	_ "github.com/jobbox-tech/recruiter-api/web/renderers" // swag
 	"github.com/spf13/viper"
 )
 
@@ -27,6 +28,17 @@ func NewHealth() Health {
 	}
 }
 
+// ShowAccount godoc
+// @Summary Get health of the service
+// @Description It returns the health of the service
+// @Tags health
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} v1health.Health{}
+// @Failure 400 {object} v1error.ErrorResponse{}
+// @Failure 404 {object} v1error.ErrorResponse{}
+// @Failure 500 {object} v1error.ErrorResponse{}
+// @Router /health [get]
 // GetHealth returns heath of service, can be extended if
 // service is running on multile instances
 func (h *health) GetHealth(w http.ResponseWriter, r *http.Request) {
