@@ -28,7 +28,6 @@ func NewHealth() Health {
 	}
 }
 
-// ShowAccount godoc
 // @Summary Get health of the service
 // @Description It returns the health of the service
 // @Tags health

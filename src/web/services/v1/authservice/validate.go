@@ -9,6 +9,16 @@ import (
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
+// @Summary Logout
+// @Description It allows to logout users from account with JWT
+// @Tags authentication
+// @Param Authorization header string true "BEARER JWT"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 401 {object} v1error.ErrorResponse{}
+// @Failure 404 {object} v1error.ErrorResponse{}
+// @Router /validate [POST]
 func (as *authservice) Validate(w http.ResponseWriter, r *http.Request) {
 	_, _, err := jwtauth.FromContext(r.Context())
 	if err != nil {

@@ -17,6 +17,58 @@
     "host": "localhost:8001",
     "basePath": "/recruiter-api/v1",
     "paths": {
+        "/authenticate": {
+            "post": {
+                "description": "It allows to objten JWT and Refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Authenticate with Token",
+                "parameters": [
+                    {
+                        "description": "authenticate",
+                        "name": "*",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authservice.authenticateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1auth.AuthenticateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "It returns the health of the service",
@@ -57,9 +109,242 @@
                     }
                 }
             }
+        },
+        "/login": {
+            "post": {
+                "description": "It allows to login to account with email address registered",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Login to account with email",
+                "parameters": [
+                    {
+                        "description": "login with email",
+                        "name": "*",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authservice.loginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "description": "It allows to logout users from account with JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Logout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "BEARER JWT",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "description": "It allows to sign up with email address and personal details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Sign up with email",
+                "parameters": [
+                    {
+                        "description": "signup with email",
+                        "name": "*",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authservice.signupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/validate": {
+            "post": {
+                "description": "It allows to logout users from account with JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Logout",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "BEARER JWT",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1error.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "authservice.authenticateRequest": {
+            "$ref": "#/definitions/v1auth.AuthenticateRequest"
+        },
+        "authservice.loginRequest": {
+            "$ref": "#/definitions/v1auth.LoginRequest"
+        },
+        "authservice.signupRequest": {
+            "$ref": "#/definitions/v1auth.SignUpRequest"
+        },
+        "v1auth.AuthenticateRequest": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description": "token used to exchnage with jwt and refresh token",
+                    "type": "string"
+                }
+            }
+        },
+        "v1auth.AuthenticateResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "description": "access token",
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "description": "resfresh token",
+                    "type": "string"
+                }
+            }
+        },
+        "v1auth.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "email address to login with",
+                    "type": "string"
+                }
+            }
+        },
+        "v1auth.SignUpRequest": {
+            "type": "object",
+            "properties": {
+                "company_name": {
+                    "description": "company name",
+                    "type": "string"
+                },
+                "designation": {
+                    "description": "designation of the user",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "office mail of user",
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "firstname of the user",
+                    "type": "string"
+                }
+            }
+        },
         "v1error.ErrorResponse": {
             "type": "object",
             "properties": {

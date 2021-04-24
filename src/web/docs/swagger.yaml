@@ -1,5 +1,47 @@
 basePath: /recruiter-api/v1
 definitions:
+  authservice.authenticateRequest:
+    $ref: '#/definitions/v1auth.AuthenticateRequest'
+  authservice.loginRequest:
+    $ref: '#/definitions/v1auth.LoginRequest'
+  authservice.signupRequest:
+    $ref: '#/definitions/v1auth.SignUpRequest'
+  v1auth.AuthenticateRequest:
+    properties:
+      token:
+        description: token used to exchnage with jwt and refresh token
+        type: string
+    type: object
+  v1auth.AuthenticateResponse:
+    properties:
+      access_token:
+        description: access token
+        type: string
+      refresh_token:
+        description: resfresh token
+        type: string
+    type: object
+  v1auth.LoginRequest:
+    properties:
+      email:
+        description: email address to login with
+        type: string
+    type: object
+  v1auth.SignUpRequest:
+    properties:
+      company_name:
+        description: company name
+        type: string
+      designation:
+        description: designation of the user
+        type: string
+      email:
+        description: office mail of user
+        type: string
+      first_name:
+        description: firstname of the user
+        type: string
+    type: object
   v1error.ErrorResponse:
     properties:
       Code:
@@ -97,6 +139,40 @@ info:
   title: Recruiter API Documentation
   version: "2.0"
 paths:
+  /authenticate:
+    post:
+      consumes:
+      - application/json
+      description: It allows to objten JWT and Refresh token
+      parameters:
+      - description: authenticate
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/authservice.authenticateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1auth.AuthenticateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Authenticate with Token
+      tags:
+      - authentication
   /health:
     get:
       consumes:
@@ -124,6 +200,120 @@ paths:
       summary: Get health of the service
       tags:
       - health
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: It allows to login to account with email address registered
+      parameters:
+      - description: login with email
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/authservice.loginRequest'
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Login to account with email
+      tags:
+      - authentication
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: It allows to logout users from account with JWT
+      parameters:
+      - description: BEARER JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Logout
+      tags:
+      - authentication
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: It allows to sign up with email address and personal details
+      parameters:
+      - description: signup with email
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/authservice.signupRequest'
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Sign up with email
+      tags:
+      - authentication
+  /validate:
+    post:
+      consumes:
+      - application/json
+      description: It allows to logout users from account with JWT
+      parameters:
+      - description: BEARER JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1error.ErrorResponse'
+      summary: Logout
+      tags:
+      - authentication
 securityDefinitions:
   ApiKeyAuth:
     in: header

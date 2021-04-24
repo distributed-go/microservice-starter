@@ -12,6 +12,17 @@ import (
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
+// @Summary Sign up with email
+// @Description It allows to sign up with email address and personal details
+// @Tags authentication
+// @Accept json
+// @Produce json
+// @Param * body signupRequest true "signup with email"
+// @Success 200
+// @Failure 400 {object} v1error.ErrorResponse{}
+// @Failure 404 {object} v1error.ErrorResponse{}
+// @Failure 500 {object} v1error.ErrorResponse{}
+// @Router /signup [POST]
 func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 	data := &signupRequest{}

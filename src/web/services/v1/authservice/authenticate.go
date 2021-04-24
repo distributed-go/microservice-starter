@@ -14,6 +14,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @Summary Authenticate with Token
+// @Description It allows to objten JWT and Refresh token
+// @Tags authentication
+// @Accept json
+// @Produce json
+// @Param * body authenticateRequest true "authenticate"
+// @Success 200 {object} v1auth.AuthenticateResponse{}
+// @Failure 400 {object} v1error.ErrorResponse{}
+// @Failure 404 {object} v1error.ErrorResponse{}
+// @Failure 500 {object} v1error.ErrorResponse{}
+// @Router /authenticate [POST]
 func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 	body := authenticateRequest{}

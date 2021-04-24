@@ -16,6 +16,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @Summary Login to account with email
+// @Description It allows to login to account with email address registered
+// @Tags authentication
+// @Accept json
+// @Produce json
+// @Param * body loginRequest true "login with email"
+// @Success 200
+// @Failure 400 {object} v1error.ErrorResponse{}
+// @Failure 404 {object} v1error.ErrorResponse{}
+// @Failure 500 {object} v1error.ErrorResponse{}
+// @Router /login [POST]
 func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 	body := &loginRequest{}
