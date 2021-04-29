@@ -76,6 +76,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	r.Post(v1Prefix+"/login", router.auth.Login)
 	r.Post(v1Prefix+"/authenticate", router.auth.Authenticate)
 	rprivate.Post(v1Prefix+"/logout", router.auth.Logout)
+	rprivate.Post(v1Prefix+"/validate", router.auth.Validate)
 
 	return r
 }

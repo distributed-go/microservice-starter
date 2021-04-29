@@ -17,7 +17,13 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 	data := &authinterface.SignUpReqInterface{}
 	if err := render.Bind(r, data); err != nil {
-		render.Render(w, r, renderers.ErrorInvalidRequest(authmodel.ErrIncorrectDetails))
+		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrIncorrectDetails))
+		return
+	}
+
+	account, _ := as.recruiterDal.GetByEmail(data.Email)
+	if account != nil {
+		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrAlreadyRegistered))
 		return
 	}
 
@@ -40,6 +46,7 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	err = as.loginWithAccount(acc, txID, r)
 	if err != nil {
 		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
+		return
 	}
 
 	render.Respond(w, r, http.NoBody)
