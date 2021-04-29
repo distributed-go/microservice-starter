@@ -24,6 +24,7 @@ type Recruiter struct {
 	Roles               []recruitermodel.Role `json:"Roles,omitempty" bson:"Roles,omitempty"`
 	VerifiedAccount     bool                  `json:"VerifiedAccount,omitempty" bson:"VerifiedAccount,omitempty"`
 	SignUpCompleted     bool                  `json:"SignUpCompleted,omitempty" bson:"SignUpCompleted,omitempty"`
+	OrganizationID      primitive.ObjectID    `json:"OrganizationID,omitempty" bson:"OrganizationID,omitempty"`
 }
 
 // Validate validates struct
