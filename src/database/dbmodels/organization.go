@@ -8,27 +8,28 @@ import (
 
 // Organization model represents the organization collection in database
 type Organization struct {
-	ID                  primitive.ObjectID `json:"ID,omitempty" bson:"_id,omitempty"`
-	CreatedTimestampUTC time.Time          `json:"CreatedTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
-	UpdatedTimestampUTC time.Time          `json:"UpdatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
-	OrganizationName    time.Time          `json:"OrganizationName,omitempty" bson:"OrganizationName,omitempty"`
-	Description         string             `json:"Description,omitempty" bson:"Description,omitempty"`
-	OrganizationWebsite string             `json:"OrganizationWebsite,omitempty" bson:"OrganizationWebsite,omitempty"`
-	OrganizationLogo    string             `json:"OrganizationLogo,omitempty" bson:"OrganizationLogo,omitempty"`
+	ID                  primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	CreatedTimestampUTC time.Time          `json:"createdTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
+	UpdatedTimestampUTC time.Time          `json:"updatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
 
-	Markets          []string         `json:"Markets,omitempty" bson:"Markets,omitempty"`
-	FundingInUSD     string           `json:"FundingInUSD,omitempty" bson:"FundingInUSD,omitempty"`
-	OrganizationSize string           `json:"OrganizationSize,omitempty" bson:"OrganizationSize,omitempty"`
-	FoundingDate     time.Time        `json:"FoundingDate,omitempty" bson:"FoundingDate,omitempty"`
-	SocialProfiles   []SocialProfiles `json:"SocialProfiles,omitempty" bson:"SocialProfiles,omitempty"`
-	Locations        []string         `json:"Locations,omitempty" bson:"Locations,omitempty"`
+	OrganizationName     time.Time `json:"organizationName,omitempty" bson:"OrganizationName,omitempty"`
+	OrganizationHeadline time.Time `json:"organizationHeadline,omitempty" bson:"OrganizationHeadline,omitempty"`
+	OrganizationWebsite  string    `json:"organizationWebsite,omitempty" bson:"OrganizationWebsite,omitempty"`
+	OrganizationLogo     string    `json:"organizationLogo,omitempty" bson:"OrganizationLogo,omitempty"`
+	OrganizationSize     string    `json:"organizationSize,omitempty" bson:"OrganizationSize,omitempty"`
 
-	IsVerified bool `json:"IsVerified,omitempty" bson:"IsVerified,omitempty"`
-	IsActive   bool `json:"IsActive,omitempty" bson:"IsActive,omitempty"`
-	IsDisabled bool `json:"IsDisabled,omitempty" bson:"IsDisabled,omitempty"`
+	Markets        []string         `json:"markets,omitempty" bson:"Markets,omitempty"`
+	FundingInUSD   string           `json:"fundingInUSD,omitempty" bson:"FundingInUSD,omitempty"`
+	FoundingDate   time.Time        `json:"foundingDate,omitempty" bson:"FoundingDate,omitempty"`
+	SocialProfiles []SocialProfiles `json:"socialProfiles,omitempty" bson:"SocialProfiles,omitempty"`
+	Locations      []string         `json:"locations,omitempty" bson:"Locations,omitempty"`
 
-	CreatedBy primitive.ObjectID   `json:"CreatedBy,omitempty" bson:"CreatedBy,omitempty"`
-	Admins    []primitive.ObjectID `json:"Admins,omitempty" bson:"Admins,omitempty"`
+	IsVerified bool `json:"isVerified,omitempty" bson:"IsVerified,omitempty"`
+	IsActive   bool `json:"isActive,omitempty" bson:"IsActive,omitempty"`
+	IsDisabled bool `json:"isDisabled,omitempty" bson:"IsDisabled,omitempty"`
+
+	CreatedBy primitive.ObjectID   `json:"createdBy,omitempty" bson:"CreatedBy,omitempty"`
+	Admins    []primitive.ObjectID `json:"admins,omitempty" bson:"Admins,omitempty"`
 }
 
 // SocialProfiles holds the social profiles of a company
