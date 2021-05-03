@@ -1,127 +1,94 @@
 basePath: /recruiter-api/v1
 definitions:
-  authservice.authenticateRequest:
-    $ref: '#/definitions/v1auth.AuthenticateRequest'
-  authservice.loginRequest:
-    $ref: '#/definitions/v1auth.LoginRequest'
-  authservice.signupRequest:
-    $ref: '#/definitions/v1auth.SignUpRequest'
-  v1auth.AuthenticateRequest:
+  authinterface.AuthenticateReqInterface:
     properties:
       token:
-        description: token used to exchnage with jwt and refresh token
         type: string
     type: object
-  v1auth.AuthenticateResponse:
+  authinterface.AuthenticateResInterface:
     properties:
-      access_token:
-        description: access token
+      accessToken:
         type: string
-      refresh_token:
-        description: resfresh token
+      refreshToken:
         type: string
     type: object
-  v1auth.LoginRequest:
+  authinterface.LoginReqInterface:
     properties:
       email:
-        description: email address to login with
         type: string
     type: object
-  v1auth.SignUpRequest:
+  authinterface.SignUpReqInterface:
     properties:
-      company_name:
-        description: company name
+      companyName:
         type: string
       designation:
-        description: designation of the user
         type: string
       email:
-        description: office mail of user
         type: string
-      first_name:
-        description: firstname of the user
+      firstName:
         type: string
     type: object
-  v1error.ErrorResponse:
+  errorinterface.ErrorResponse:
     properties:
-      Code:
+      code:
         description: application-specific error code
         type: integer
-      Error:
+      error:
         description: application-level error message, for debugging
         type: string
-      StatusText:
+      status:
         description: user-level status message
         type: string
     type: object
-  v1health.Health:
+  healthinterface.Health:
     properties:
-      inbound_connections:
-        description: inbound connections list
+      inboundInterfaces:
         items:
-          $ref: '#/definitions/v1health.InboundConnection'
+          $ref: '#/definitions/healthinterface.InboundInterface'
         type: array
-      outbound_connections:
-        description: outbound connections list
+      outboundInterfaces:
         items:
-          $ref: '#/definitions/v1health.OutboundConnection'
+          $ref: '#/definitions/healthinterface.OutboundInterface'
         type: array
-      service_name:
-        description: service name
+      serviceName:
         type: string
-      service_provider:
-        description: service provider name
+      serviceProvider:
         type: string
-      service_start_time_utc:
-        description: service start time in utc
+      serviceStartTimeUTC:
         type: string
-      service_status:
-        description: service status
-        type: integer
-      service_version:
-        description: service version
+      serviceStatus:
         type: string
-      timestamp_utc:
-        description: current timestamp in utc
+      serviceVersion:
+        type: string
+      timeStampUTC:
         type: string
       uptime:
-        description: service uptime in utc
         type: number
     type: object
-  v1health.InboundConnection:
+  healthinterface.InboundInterface:
     properties:
       address:
-        description: ip address of the application
         type: string
-      application_name:
-        description: name of the application
+      applicationName:
         type: string
-      connection_status:
-        description: connectins status of the application
-        type: integer
+      connectionStatus:
+        type: string
       hostname:
-        description: hostname
         type: string
       os:
-        description: OS
         type: string
-      timestamp_utc:
-        description: current timestamp in utc
+      timeStampUTC:
         type: string
     type: object
-  v1health.OutboundConnection:
+  healthinterface.OutboundInterface:
     properties:
-      application_name:
-        description: applcition name
+      applicationName:
         type: string
-      connection_status:
-        description: connection status of application
-        type: integer
-      timestamp_utc:
-        description: current timestamp in utc
+      connectionStatus:
+        type: string
+      timeStampUTC:
         type: string
       urls:
-        description: connection urls
         items:
           type: string
         type: array
@@ -150,26 +117,26 @@ paths:
         name: '*'
         required: true
         schema:
-          $ref: '#/definitions/authservice.authenticateRequest'
+          $ref: '#/definitions/authinterface.AuthenticateReqInterface'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1auth.AuthenticateResponse'
+            $ref: '#/definitions/authinterface.AuthenticateResInterface'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Authenticate with Token
       tags:
       - authentication
@@ -184,19 +151,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1health.Health'
+            $ref: '#/definitions/healthinterface.Health'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Get health of the service
       tags:
       - health
@@ -211,7 +178,7 @@ paths:
         name: '*'
         required: true
         schema:
-          $ref: '#/definitions/authservice.loginRequest'
+          $ref: '#/definitions/authinterface.LoginReqInterface'
       produces:
       - application/json
       responses:
@@ -219,15 +186,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Login to account with email
       tags:
       - authentication
@@ -249,11 +216,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Logout
       tags:
       - authentication
@@ -268,7 +235,7 @@ paths:
         name: '*'
         required: true
         schema:
-          $ref: '#/definitions/authservice.signupRequest'
+          $ref: '#/definitions/authinterface.SignUpReqInterface'
       produces:
       - application/json
       responses:
@@ -276,15 +243,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Sign up with email
       tags:
       - authentication
@@ -306,11 +273,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/v1error.ErrorResponse'
+            $ref: '#/definitions/errorinterface.ErrorResponse'
       summary: Logout
       tags:
       - authentication

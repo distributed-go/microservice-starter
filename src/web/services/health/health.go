@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/proto/v1/health/v1health"
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
 	_ "github.com/jobbox-tech/recruiter-api/web/renderers" // swag
 	"github.com/spf13/viper"
 )
@@ -33,52 +33,52 @@ func NewHealth() Health {
 // @Tags health
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} v1health.Health{}
-// @Failure 400 {object} v1error.ErrorResponse{}
-// @Failure 404 {object} v1error.ErrorResponse{}
-// @Failure 500 {object} v1error.ErrorResponse{}
+// @Success 200 {object} healthinterface.Health{}
+// @Failure 400 {object} errorinterface.ErrorResponse{}
+// @Failure 404 {object} errorinterface.ErrorResponse{}
+// @Failure 500 {object} errorinterface.ErrorResponse{}
 // @Router /health [get]
 // GetHealth returns heath of service, can be extended if
 // service is running on multile instances
 func (h *health) GetHealth(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
 
-	healthStatus := v1health.Health{}
+	healthStatus := healthinterface.Health{}
 	healthStatus.ServiceName = viper.GetString("service_name")
 	healthStatus.ServiceProvider = viper.GetString("service_provider")
 	healthStatus.ServiceVersion = viper.GetString("service_version")
-	healthStatus.TimestampUtc = time.Now().UTC().String()
-	healthStatus.ServiceStatus = v1health.ServiceStatus_Running
-	healthStatus.ServiceStartTimeUtc = viper.GetTime("service_started_timestamp_utc").String()
+	healthStatus.TimeStampUTC = time.Now().UTC()
+	healthStatus.ServiceStatus = healthinterface.ServiceRunning
+	healthStatus.ServiceStartTimeUTC = viper.GetTime("service_started_timestamp_utc")
 	healthStatus.Uptime = time.Since(viper.GetTime("service_started_timestamp_utc")).Hours()
 
-	inbound := []*v1health.InboundConnection{}
-	outbound := []*v1health.OutboundConnection{}
+	inbound := []healthinterface.InboundInterface{}
+	outbound := []healthinterface.OutboundInterface{}
 
 	// add mongo connection status
 	mongo := h.db.Health()
-	outbound = append(outbound, mongo)
+	outbound = append(outbound, *mongo)
 
 	// add internal server details
 	name, _ := os.Hostname()
 
-	server := v1health.InboundConnection{}
+	server := healthinterface.InboundInterface{}
 	server.Hostname = name
-	server.Os = runtime.GOOS
-	server.TimestampUtc = time.Now().UTC().String()
+	server.OS = runtime.GOOS
+	server.TimeStampUTC = time.Now().UTC()
 	server.ApplicationName = viper.GetString("service_name")
-	server.ConnectionStatus = v1health.ConnectionStatus_Active
+	server.ConnectionStatus = healthinterface.ConnectionActive
 
 	exIP, err := externalIP()
 	if err != nil {
 		h.logger.Error(txID, FailedToObtainOutboundIP).Error("Failed to obtain inbound ip address with error %v", err)
-		server.ConnectionStatus = v1health.ConnectionStatus_Disconnected
+		server.ConnectionStatus = healthinterface.ConnectionDisconnected
 	}
 	server.Address = exIP
-	inbound = append(inbound, &server)
+	inbound = append(inbound, server)
 
-	healthStatus.InboundConnections = inbound
-	healthStatus.OutboundConnections = outbound
+	healthStatus.InboundInterfaces = inbound
+	healthStatus.OutboundInterfaces = outbound
 
-	render.JSON(w, r, &healthStatus)
+	render.JSON(w, r, healthStatus)
 }

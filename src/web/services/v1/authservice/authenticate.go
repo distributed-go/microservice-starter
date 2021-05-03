@@ -5,10 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/proto/v1/auth/v1auth"
-
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/models/authmodel"
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 	"github.com/mssola/user_agent"
 	"github.com/spf13/viper"
@@ -19,16 +18,16 @@ import (
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param * body authenticateRequest true "authenticate"
-// @Success 200 {object} v1auth.AuthenticateResponse{}
-// @Failure 400 {object} v1error.ErrorResponse{}
-// @Failure 404 {object} v1error.ErrorResponse{}
-// @Failure 500 {object} v1error.ErrorResponse{}
+// @Param * body authinterface.AuthenticateReqInterface{} true "authenticate"
+// @Success 200 {object} authinterface.AuthenticateResInterface{}
+// @Failure 400 {object} errorinterface.ErrorResponse{}
+// @Failure 404 {object} errorinterface.ErrorResponse{}
+// @Failure 500 {object} errorinterface.ErrorResponse{}
 // @Router /authenticate [POST]
 func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
-	body := authenticateRequest{}
-	if err := render.Bind(r, &body); err != nil {
+	body := &authinterface.AuthenticateReqInterface{}
+	if err := render.Bind(r, body); err != nil {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to read the request body with error %v", err)
 		render.Render(w, r, renderers.ErrorUnauthorized(authmodel.ErrIncorrectDetails))
 		return
@@ -91,7 +90,7 @@ func (as *authservice) Authenticate(w http.ResponseWriter, r *http.Request) {
 		as.logger.Error(txID, authmodel.FailedToAuthenticateToken).Errorf("Failed to update recruiter details with error %v", err)
 	}
 
-	render.Respond(w, r, &v1auth.AuthenticateResponse{
+	render.Respond(w, r, &authinterface.AuthenticateResInterface{
 		AccessToken:  access,
 		RefreshToken: refresh,
 	})

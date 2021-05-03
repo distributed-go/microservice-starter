@@ -32,6 +32,7 @@
         "database": "recruiter_db",
         "query_timeout_in_sec": 40,
         "recruiters_collection": "recruiters",
+        "organizations_collection": "organizations",
         "access_tokens_collection": "access_tokens"
     },
     "jwt": {

@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/models/authmodel"
 	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
@@ -17,15 +18,15 @@ import (
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param * body signupRequest true "signup with email"
+// @Param * body authinterface.SignUpReqInterface{} true "signup with email"
 // @Success 200
-// @Failure 400 {object} v1error.ErrorResponse{}
-// @Failure 404 {object} v1error.ErrorResponse{}
-// @Failure 500 {object} v1error.ErrorResponse{}
+// @Failure 400 {object} errorinterface.ErrorResponse{}
+// @Failure 404 {object} errorinterface.ErrorResponse{}
+// @Failure 500 {object} errorinterface.ErrorResponse{}
 // @Router /signup [POST]
 func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
-	data := &signupRequest{}
+	data := &authinterface.SignUpReqInterface{}
 	if err := render.Bind(r, data); err != nil {
 		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrIncorrectDetails))
 		return

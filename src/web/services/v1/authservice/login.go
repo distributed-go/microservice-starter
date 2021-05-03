@@ -11,6 +11,7 @@ import (
 	"github.com/jobbox-tech/recruiter-api/email/authemail"
 	"github.com/jobbox-tech/recruiter-api/email/mailer"
 	"github.com/jobbox-tech/recruiter-api/models/authmodel"
+	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
 	"github.com/jobbox-tech/recruiter-api/web/renderers"
 	"github.com/mssola/user_agent"
 	"github.com/spf13/viper"
@@ -21,15 +22,15 @@ import (
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param * body loginRequest true "login with email"
+// @Param * body authinterface.LoginReqInterface{} true "login with email"
 // @Success 200
-// @Failure 400 {object} v1error.ErrorResponse{}
-// @Failure 404 {object} v1error.ErrorResponse{}
-// @Failure 500 {object} v1error.ErrorResponse{}
+// @Failure 400 {object} errorinterface.ErrorResponse{}
+// @Failure 404 {object} errorinterface.ErrorResponse{}
+// @Failure 500 {object} errorinterface.ErrorResponse{}
 // @Router /login [POST]
 func (as *authservice) Login(w http.ResponseWriter, r *http.Request) {
 	txID := r.Header["transaction_id"][0]
-	body := &loginRequest{}
+	body := &authinterface.LoginReqInterface{}
 	if err := render.Bind(r, body); err != nil {
 		as.logger.Error(txID, authmodel.FailedToCreateAccessToken).Error(err)
 		render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrInvalidLogin))

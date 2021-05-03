@@ -52,7 +52,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authservice.authenticateRequest"
+                            "$ref": "#/definitions/authinterface.AuthenticateReqInterface"
                         }
                     }
                 ],
@@ -60,25 +60,25 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1auth.AuthenticateResponse"
+                            "$ref": "#/definitions/authinterface.AuthenticateResInterface"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -101,25 +101,25 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1health.Health"
+                            "$ref": "#/definitions/healthinterface.Health"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -145,7 +145,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authservice.loginRequest"
+                            "$ref": "#/definitions/authinterface.LoginReqInterface"
                         }
                     }
                 ],
@@ -154,19 +154,19 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -199,13 +199,13 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -231,7 +231,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/authservice.signupRequest"
+                            "$ref": "#/definitions/authinterface.SignUpReqInterface"
                         }
                     }
                 ],
@@ -240,19 +240,19 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -285,13 +285,13 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/v1error.ErrorResponse"
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
                         }
                     }
                 }
@@ -299,177 +299,141 @@ var doc = `{
         }
     },
     "definitions": {
-        "authservice.authenticateRequest": {
-            "$ref": "#/definitions/v1auth.AuthenticateRequest"
-        },
-        "authservice.loginRequest": {
-            "$ref": "#/definitions/v1auth.LoginRequest"
-        },
-        "authservice.signupRequest": {
-            "$ref": "#/definitions/v1auth.SignUpRequest"
-        },
-        "v1auth.AuthenticateRequest": {
+        "authinterface.AuthenticateReqInterface": {
             "type": "object",
             "properties": {
                 "token": {
-                    "description": "token used to exchnage with jwt and refresh token",
                     "type": "string"
                 }
             }
         },
-        "v1auth.AuthenticateResponse": {
+        "authinterface.AuthenticateResInterface": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "description": "access token",
+                "accessToken": {
                     "type": "string"
                 },
-                "refresh_token": {
-                    "description": "resfresh token",
+                "refreshToken": {
                     "type": "string"
                 }
             }
         },
-        "v1auth.LoginRequest": {
+        "authinterface.LoginReqInterface": {
             "type": "object",
             "properties": {
                 "email": {
-                    "description": "email address to login with",
                     "type": "string"
                 }
             }
         },
-        "v1auth.SignUpRequest": {
+        "authinterface.SignUpReqInterface": {
             "type": "object",
             "properties": {
-                "company_name": {
-                    "description": "company name",
+                "companyName": {
                     "type": "string"
                 },
                 "designation": {
-                    "description": "designation of the user",
                     "type": "string"
                 },
                 "email": {
-                    "description": "office mail of user",
                     "type": "string"
                 },
-                "first_name": {
-                    "description": "firstname of the user",
+                "firstName": {
                     "type": "string"
                 }
             }
         },
-        "v1error.ErrorResponse": {
+        "errorinterface.ErrorResponse": {
             "type": "object",
             "properties": {
-                "Code": {
+                "code": {
                     "description": "application-specific error code",
                     "type": "integer"
                 },
-                "Error": {
+                "error": {
                     "description": "application-level error message, for debugging",
                     "type": "string"
                 },
-                "StatusText": {
+                "status": {
                     "description": "user-level status message",
                     "type": "string"
                 }
             }
         },
-        "v1health.Health": {
+        "healthinterface.Health": {
             "type": "object",
             "properties": {
-                "inbound_connections": {
-                    "description": "inbound connections list",
+                "inboundInterfaces": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/v1health.InboundConnection"
+                        "$ref": "#/definitions/healthinterface.InboundInterface"
                     }
                 },
-                "outbound_connections": {
-                    "description": "outbound connections list",
+                "outboundInterfaces": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/v1health.OutboundConnection"
+                        "$ref": "#/definitions/healthinterface.OutboundInterface"
                     }
                 },
-                "service_name": {
-                    "description": "service name",
+                "serviceName": {
                     "type": "string"
                 },
-                "service_provider": {
-                    "description": "service provider name",
+                "serviceProvider": {
                     "type": "string"
                 },
-                "service_start_time_utc": {
-                    "description": "service start time in utc",
+                "serviceStartTimeUTC": {
                     "type": "string"
                 },
-                "service_status": {
-                    "description": "service status",
-                    "type": "integer"
-                },
-                "service_version": {
-                    "description": "service version",
+                "serviceStatus": {
                     "type": "string"
                 },
-                "timestamp_utc": {
-                    "description": "current timestamp in utc",
+                "serviceVersion": {
+                    "type": "string"
+                },
+                "timeStampUTC": {
                     "type": "string"
                 },
                 "uptime": {
-                    "description": "service uptime in utc",
                     "type": "number"
                 }
             }
         },
-        "v1health.InboundConnection": {
+        "healthinterface.InboundInterface": {
             "type": "object",
             "properties": {
                 "address": {
-                    "description": "ip address of the application",
                     "type": "string"
                 },
-                "application_name": {
-                    "description": "name of the application",
+                "applicationName": {
                     "type": "string"
                 },
-                "connection_status": {
-                    "description": "connectins status of the application",
-                    "type": "integer"
+                "connectionStatus": {
+                    "type": "string"
                 },
                 "hostname": {
-                    "description": "hostname",
                     "type": "string"
                 },
                 "os": {
-                    "description": "OS",
                     "type": "string"
                 },
-                "timestamp_utc": {
-                    "description": "current timestamp in utc",
+                "timeStampUTC": {
                     "type": "string"
                 }
             }
         },
-        "v1health.OutboundConnection": {
+        "healthinterface.OutboundInterface": {
             "type": "object",
             "properties": {
-                "application_name": {
-                    "description": "applcition name",
+                "applicationName": {
                     "type": "string"
                 },
-                "connection_status": {
-                    "description": "connection status of application",
-                    "type": "integer"
+                "connectionStatus": {
+                    "type": "string"
                 },
-                "timestamp_utc": {
-                    "description": "current timestamp in utc",
+                "timeStampUTC": {
                     "type": "string"
                 },
                 "urls": {
-                    "description": "connection urls",
                     "type": "array",
                     "items": {
                         "type": "string"
