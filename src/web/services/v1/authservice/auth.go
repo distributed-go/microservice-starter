@@ -2,6 +2,7 @@ package authservice
 
 import (
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
+	"github.com/jobbox-tech/recruiter-api/dal/organizationdal"
 	"github.com/jobbox-tech/recruiter-api/dal/recruiterdal"
 	"github.com/jobbox-tech/recruiter-api/dal/tokendal"
 	"github.com/jobbox-tech/recruiter-api/email/authemail"
@@ -17,6 +18,8 @@ type authservice struct {
 
 	tokenAuth jwt.TokenAuth
 	authemail authemail.AuthEmail
+
+	orgDal organizationdal.OrganizationDal
 }
 
 // NewAuthService returns service impl
@@ -29,5 +32,7 @@ func NewAuthService() AuthService {
 
 		authemail: authemail.NewAuthEmail(),
 		tokenAuth: jwt.NewTokenAuth(),
+
+		orgDal: organizationdal.NewOrganizationDal(),
 	}
 }

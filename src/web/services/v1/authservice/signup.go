@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/go-chi/render"
 	"github.com/jobbox-tech/recruiter-api/models/authmodel"
@@ -38,6 +39,41 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var orgID primitive.ObjectID
+	var organization *dbmodels.Organization
+	var newOrg bool
+	if len(data.Company.CompanyID) > 0 {
+		organizationID, err := primitive.ObjectIDFromHex(data.Company.CompanyID)
+		if err != nil {
+			as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to parse ID with error %v", err)
+			render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrIncorrectDetails))
+			return
+		}
+
+		_, err = as.orgDal.GetByID(organizationID)
+		if err != nil {
+			if err != nil {
+				as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to get organization record with error %v", err)
+				render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrIncorrectDetails))
+				return
+			}
+		}
+		orgID = organizationID
+	} else {
+		org, err := as.orgDal.Create(txID, &dbmodels.Organization{
+			OrganizationName: data.Company.CompanyName,
+			IsActive:         true,
+		})
+		if err != nil {
+			as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to create organization record with error %v", err)
+			render.Render(w, r, renderers.ErrorBadRequest(authmodel.ErrServerError))
+			return
+		}
+		orgID = org.ID
+		organization = org
+		newOrg = true
+	}
+
 	recruiter := &dbmodels.Recruiter{}
 	recruiter.Roles = []recruitermodel.Role{recruitermodel.USER}
 	recruiter.Active = true
@@ -46,12 +82,24 @@ func (as *authservice) SignUp(w http.ResponseWriter, r *http.Request) {
 	recruiter.Email = data.Email
 	recruiter.FirstName = data.FirstName
 	recruiter.Designation = data.Designation
+	recruiter.OrganizationID = orgID
 
 	acc, err := as.recruiterDal.Create(txID, recruiter)
 	if err != nil {
 		as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to create recruiter record with error %v", err)
 		render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
 		return
+	}
+
+	if newOrg {
+		organization.CreatedBy = recruiter.ID
+		organization.Admins = []primitive.ObjectID{recruiter.ID}
+		err = as.orgDal.Update(organization)
+		if err != nil {
+			as.logger.Error(txID, authmodel.FailedToSignUp).Errorf("Failed to update organization record with error %v", err)
+			render.Render(w, r, renderers.ErrorInternalServerError(authmodel.ErrServerError))
+			return
+		}
 	}
 
 	err = as.loginWithAccount(acc, txID, r)

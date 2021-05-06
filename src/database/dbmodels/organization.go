@@ -12,11 +12,11 @@ type Organization struct {
 	CreatedTimestampUTC time.Time          `json:"createdTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
 	UpdatedTimestampUTC time.Time          `json:"updatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
 
-	OrganizationName     time.Time `json:"organizationName,omitempty" bson:"OrganizationName,omitempty"`
-	OrganizationHeadline time.Time `json:"organizationHeadline,omitempty" bson:"OrganizationHeadline,omitempty"`
-	OrganizationWebsite  string    `json:"organizationWebsite,omitempty" bson:"OrganizationWebsite,omitempty"`
-	OrganizationLogo     string    `json:"organizationLogo,omitempty" bson:"OrganizationLogo,omitempty"`
-	OrganizationSize     string    `json:"organizationSize,omitempty" bson:"OrganizationSize,omitempty"`
+	OrganizationName     string `json:"organizationName,omitempty" bson:"OrganizationName,omitempty"`
+	OrganizationHeadline string `json:"organizationHeadline,omitempty" bson:"OrganizationHeadline,omitempty"`
+	OrganizationWebsite  string `json:"organizationWebsite,omitempty" bson:"OrganizationWebsite,omitempty"`
+	OrganizationLogo     string `json:"organizationLogo,omitempty" bson:"OrganizationLogo,omitempty"`
+	OrganizationSize     string `json:"organizationSize,omitempty" bson:"OrganizationSize,omitempty"`
 
 	Markets        []string         `json:"markets,omitempty" bson:"Markets,omitempty"`
 	FundingInUSD   string           `json:"fundingInUSD,omitempty" bson:"FundingInUSD,omitempty"`
