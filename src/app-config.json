@@ -33,6 +33,7 @@
         "query_timeout_in_sec": 40,
         "recruiters_collection": "recruiters",
         "organizations_collection": "organizations",
+        "jobs_collection": "jobs",
         "access_tokens_collection": "access_tokens"
     },
     "jwt": {

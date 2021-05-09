@@ -12,9 +12,9 @@ type Job struct {
 	CreatedTimestampUTC time.Time          `json:"createdTimestampUTC,omitempty" bson:"CreatedTimestampUTC,omitempty"`
 	UpdatedTimestampUTC time.Time          `json:"updatedTimestampUTC,omitempty" bson:"UpdatedTimestampUTC,omitempty"`
 
-	Title    time.Time `json:"title,omitempty" bson:"Title,omitempty"`
-	Summary  string    `json:"summary,omitempty" bson:"Summary,omitempty"`
-	SideNote string    `json:"sideNote,omitempty" bson:"SideNote,omitempty"`
+	Title    string `json:"title,omitempty" bson:"Title,omitempty"`
+	Summary  string `json:"summary,omitempty" bson:"Summary,omitempty"`
+	SideNote string `json:"sideNote,omitempty" bson:"SideNote,omitempty"`
 
 	Locations         []string `json:"locations,omitempty" bson:"Locations,omitempty"`
 	MustHaveSkills    []string `json:"mustHaveSkills,omitempty" bson:"MustHaveSkills,omitempty"`
@@ -29,8 +29,7 @@ type Job struct {
 	VisaSponsorShip bool      `json:"visaSponsorShip,omitempty" bson:"VisaSponsorShip,omitempty"`
 
 	IsVerified bool `json:"isVerified,omitempty" bson:"IsVerified,omitempty"`
-	IsActive   bool `json:"isActive,omitempty" bson:"IsActive,omitempty"`
-	IsDisabled bool `json:"isDisabled,omitempty" bson:"IsDisabled,omitempty"`
+	Deleted    bool `json:"deleted,omitempty" bson:"Deleted,omitempty"`
 
 	RecruiterID    primitive.ObjectID `json:"recruiterID,omitempty" bson:"RecruiterID,omitempty"`
 	OrganizationID primitive.ObjectID `json:"organizationID,omitempty" bson:"OrganizationID,omitempty"`
