@@ -125,6 +125,58 @@ var doc = `{
                 }
             }
         },
+        "/jobs": {
+            "post": {
+                "description": "It allows to Post a new Job",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Post a new Job",
+                "parameters": [
+                    {
+                        "description": "Job Details",
+                        "name": "*",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/jobsinterface.JobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/jobsinterface.JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/errorinterface.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "It allows to login to account with email address registered",
@@ -318,6 +370,17 @@ var doc = `{
                 }
             }
         },
+        "authinterface.Company": {
+            "type": "object",
+            "properties": {
+                "companyID": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                }
+            }
+        },
         "authinterface.LoginReqInterface": {
             "type": "object",
             "properties": {
@@ -329,8 +392,9 @@ var doc = `{
         "authinterface.SignUpReqInterface": {
             "type": "object",
             "properties": {
-                "companyName": {
-                    "type": "string"
+                "company": {
+                    "type": "object",
+                    "$ref": "#/definitions/authinterface.Company"
                 },
                 "designation": {
                     "type": "string"
@@ -438,6 +502,166 @@ var doc = `{
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "jobsinterface.JobRequest": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdTimestampUTC": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                },
+                "employmentType": {
+                    "type": "string"
+                },
+                "goodToHaveSkills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRemote": {
+                    "type": "boolean"
+                },
+                "isVerified": {
+                    "type": "boolean"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mustHaveSkills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "organizationID": {
+                    "type": "string"
+                },
+                "recruiterID": {
+                    "type": "string"
+                },
+                "remoteCountries": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remoteTimezone": {
+                    "type": "string"
+                },
+                "sideNote": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedTimestampUTC": {
+                    "type": "string"
+                },
+                "visaSponsorShip": {
+                    "type": "boolean"
+                },
+                "yearsOfExperience": {
+                    "type": "string"
+                }
+            }
+        },
+        "jobsinterface.JobResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdTimestampUTC": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                },
+                "employmentType": {
+                    "type": "string"
+                },
+                "goodToHaveSkills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRemote": {
+                    "type": "boolean"
+                },
+                "isVerified": {
+                    "type": "boolean"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mustHaveSkills": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "organizationID": {
+                    "type": "string"
+                },
+                "recruiterID": {
+                    "type": "string"
+                },
+                "remoteCountries": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remoteTimezone": {
+                    "type": "string"
+                },
+                "sideNote": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedTimestampUTC": {
+                    "type": "string"
+                },
+                "visaSponsorShip": {
+                    "type": "boolean"
+                },
+                "yearsOfExperience": {
+                    "type": "string"
                 }
             }
         }

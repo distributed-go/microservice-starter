@@ -16,8 +16,8 @@ type jobs struct {
 	db connection.MongoStore
 }
 
-// NewOrganizationDal ...
-func NewOrganizationDal() OrganizationDal {
+// NewJobsDal ...
+func NewJobsDal() JobsDal {
 	return &jobs{
 		db: connection.NewMongoStore(),
 	}

@@ -5,8 +5,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// OrganizationDal ...
-type OrganizationDal interface {
+// JobsDal ...
+type JobsDal interface {
 	Create(txID string, account *dbmodels.Job) (*dbmodels.Job, error)
 	Update(recruiter *dbmodels.Job) error
 	GetByID(id primitive.ObjectID) (*dbmodels.Job, error)

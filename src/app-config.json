@@ -37,7 +37,7 @@
         "access_tokens_collection": "access_tokens"
     },
     "jwt": {
-        "auth_jwt_expiry" : "15m",
+        "auth_jwt_expiry" : "24h",
         "auth_jwt_refresh_expiry":"1h",
         "auth_jwt_secret": "secret", 
         "auth_login_token_expiry" : "24h"

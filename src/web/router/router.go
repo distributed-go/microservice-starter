@@ -7,6 +7,7 @@ import (
 
 	"github.com/jobbox-tech/recruiter-api/auth/jwt"
 	"github.com/jobbox-tech/recruiter-api/web/services/v1/authservice"
+	"github.com/jobbox-tech/recruiter-api/web/services/v1/jobsservice"
 	"github.com/jobbox-tech/recruiter-api/web/services/v1/recruiterservice"
 	swagger "github.com/swaggo/http-swagger"
 
@@ -24,6 +25,7 @@ type router struct {
 	logger      logging.Logger
 	health      health.Health
 	recruiter   recruiterservice.RecruiterService
+	jobs        jobsservice.JobsService
 	auth        authservice.AuthService
 	tokenAuth   jwt.TokenAuth
 	middlewares middlewares.Middlewares
@@ -36,6 +38,7 @@ func NewRouter() Router {
 		health:      health.NewHealth(),
 		recruiter:   recruiterservice.NewRecruiterService(),
 		auth:        authservice.NewAuthService(),
+		jobs:        jobsservice.NewJobService(),
 		tokenAuth:   jwt.NewTokenAuth(),
 		middlewares: middlewares.NewMiddlewares(),
 	}
@@ -83,6 +86,9 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 	r.Post(v1Prefix+"/authenticate", router.auth.Authenticate)
 	rprivate.Post(v1Prefix+"/logout", router.auth.Logout)
 	rprivate.Post(v1Prefix+"/validate", router.auth.Validate)
+
+	// =================  jobs routes ======================
+	rprivate.Post(v1Prefix+"/jobs", router.jobs.Create)
 
 	return r
 }

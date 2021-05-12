@@ -12,6 +12,13 @@ definitions:
       refreshToken:
         type: string
     type: object
+  authinterface.Company:
+    properties:
+      companyID:
+        type: string
+      companyName:
+        type: string
+    type: object
   authinterface.LoginReqInterface:
     properties:
       email:
@@ -19,8 +26,9 @@ definitions:
     type: object
   authinterface.SignUpReqInterface:
     properties:
-      companyName:
-        type: string
+      company:
+        $ref: '#/definitions/authinterface.Company'
+        type: object
       designation:
         type: string
       email:
@@ -92,6 +100,112 @@ definitions:
         items:
           type: string
         type: array
+    type: object
+  jobsinterface.JobRequest:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      createdTimestampUTC:
+        type: string
+      deleted:
+        type: boolean
+      employmentType:
+        type: string
+      goodToHaveSkills:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      isRemote:
+        type: boolean
+      isVerified:
+        type: boolean
+      locations:
+        items:
+          type: string
+        type: array
+      mustHaveSkills:
+        items:
+          type: string
+        type: array
+      organizationID:
+        type: string
+      recruiterID:
+        type: string
+      remoteCountries:
+        items:
+          type: string
+        type: array
+      remoteTimezone:
+        type: string
+      sideNote:
+        type: string
+      summary:
+        type: string
+      title:
+        type: string
+      updatedTimestampUTC:
+        type: string
+      visaSponsorShip:
+        type: boolean
+      yearsOfExperience:
+        type: string
+    type: object
+  jobsinterface.JobResponse:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      createdTimestampUTC:
+        type: string
+      deleted:
+        type: boolean
+      employmentType:
+        type: string
+      goodToHaveSkills:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      isRemote:
+        type: boolean
+      isVerified:
+        type: boolean
+      locations:
+        items:
+          type: string
+        type: array
+      mustHaveSkills:
+        items:
+          type: string
+        type: array
+      organizationID:
+        type: string
+      recruiterID:
+        type: string
+      remoteCountries:
+        items:
+          type: string
+        type: array
+      remoteTimezone:
+        type: string
+      sideNote:
+        type: string
+      summary:
+        type: string
+      title:
+        type: string
+      updatedTimestampUTC:
+        type: string
+      visaSponsorShip:
+        type: boolean
+      yearsOfExperience:
+        type: string
     type: object
 host: localhost:8001
 info:
@@ -167,6 +281,40 @@ paths:
       summary: Get health of the service
       tags:
       - health
+  /jobs:
+    post:
+      consumes:
+      - application/json
+      description: It allows to Post a new Job
+      parameters:
+      - description: Job Details
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/jobsinterface.JobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jobsinterface.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+      summary: Post a new Job
+      tags:
+      - jobs
   /login:
     post:
       consumes:
