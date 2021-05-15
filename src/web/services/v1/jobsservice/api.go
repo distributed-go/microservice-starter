@@ -21,4 +21,5 @@ var (
 // List of error codes used in jobs service/model
 var (
 	FailedToCreateJob = "Failed-To-Create-Job"
+	FailedToGetJob    = "Failed-To-Get-Job"
 )

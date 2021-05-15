@@ -89,6 +89,7 @@ func (router *router) Router(enableCORS bool) *chi.Mux {
 
 	// =================  jobs routes ======================
 	rprivate.Post(v1Prefix+"/jobs", router.jobs.Create)
+	rprivate.Get(v1Prefix+"/jobs"+"/{jobID}", router.jobs.Get)
 
 	return r
 }
