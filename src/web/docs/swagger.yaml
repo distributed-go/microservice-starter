@@ -337,6 +337,44 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/errorinterface.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+      summary: Get a Job
+      tags:
+      - jobs
+    put:
+      consumes:
+      - application/json
+      description: It allows to update a Job
+      parameters:
+      - description: Job Details
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/jobsinterface.JobRequest'
+      - description: Job ID
+        in: path
+        name: jobID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jobsinterface.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
         "401":
           description: Unauthorized
           schema:
@@ -345,7 +383,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/errorinterface.ErrorResponse'
-      summary: Get a  Job
+      summary: Update a  Job
       tags:
       - jobs
   /login:

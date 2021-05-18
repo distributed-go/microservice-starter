@@ -22,4 +22,5 @@ var (
 var (
 	FailedToCreateJob = "Failed-To-Create-Job"
 	FailedToGetJob    = "Failed-To-Get-Job"
+	FailedToUpdateJob = "Failed-To-Update-Job"
 )
