@@ -14,6 +14,7 @@ import (
 // @Tags jobs
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "BEARER JWT"
 // @Param * body jobsinterface.JobRequest{} true "Job Details"
 // @Success 200 {object} jobsinterface.JobResponse{}
 // @Failure 400 {object} errorinterface.ErrorResponse{}

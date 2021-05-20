@@ -1,6 +1,7 @@
 package jobsservice
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -36,6 +37,11 @@ func (j *jobsservice) Get(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		j.logger.Error(txID, FailedToGetJob).Error(err)
 		render.Render(w, r, renderers.ErrorNotFound(err))
+		return
+	}
+
+	if resp.Deleted {
+		render.Render(w, r, renderers.ErrorNotFound(errors.New("This job does not exists")))
 		return
 	}
 

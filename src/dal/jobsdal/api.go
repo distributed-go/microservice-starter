@@ -10,5 +10,4 @@ type JobsDal interface {
 	Create(txID string, account *dbmodels.Job) (*dbmodels.Job, error)
 	Update(recruiter *dbmodels.Job) error
 	GetByID(id primitive.ObjectID) (*dbmodels.Job, error)
-	DeleteByID(id primitive.ObjectID) error
 }

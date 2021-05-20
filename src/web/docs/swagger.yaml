@@ -287,6 +287,11 @@ paths:
       - application/json
       description: It allows to Post a new Job
       parameters:
+      - description: BEARER JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Job Details
         in: body
         name: '*'
@@ -316,6 +321,44 @@ paths:
       tags:
       - jobs
   /jobs/jobID:
+    delete:
+      consumes:
+      - application/json
+      description: It allows to delete a Job by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobID
+        required: true
+        type: string
+      - description: BEARER JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errorinterface.ErrorResponse'
+      summary: Delete a Job
+      tags:
+      - jobs
     get:
       consumes:
       - application/json
@@ -359,6 +402,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/jobsinterface.JobRequest'
+      - description: BEARER JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Job ID
         in: path
         name: jobID

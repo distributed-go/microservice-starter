@@ -71,24 +71,3 @@ func (r *jobs) GetByID(id primitive.ObjectID) (*dbmodels.Job, error) {
 
 	return &rec, nil
 }
-
-func (r *jobs) DeleteByID(id primitive.ObjectID) error {
-	rc := r.db.Database().Collection(viper.GetString("db.jobs_collection"))
-	ctx, cancel := context.WithTimeout(
-		context.Background(),
-		time.Duration(viper.GetInt("db.query_timeout_in_sec"))*time.Second,
-	)
-	defer cancel()
-
-	if _, err := rc.UpdateOne(
-		ctx,
-		bson.M{"_id": id},
-		bson.D{
-			{"$set", bson.D{{"Deleted", true}}},
-		},
-	); err != nil {
-		return err
-	}
-
-	return nil
-}
