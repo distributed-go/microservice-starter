@@ -25,7 +25,6 @@ func (body *JobRequest) Bind(r *http.Request) error {
 		validation.Field(&body.Job.Title, validation.Required, validation.Length(1, 256)),
 		validation.Field(&body.Job.Locations, validation.Required, validation.Length(1, 48)),
 		validation.Field(&body.Job.MustHaveSkills, validation.Required, validation.Length(1, 48)),
-		validation.Field(&body.Job.YearsOfExperience, validation.Required, validation.Length(1, 256)),
 		validation.Field(&body.Job.Category, validation.Required, validation.Length(1, 48)),
 		validation.Field(&body.Job.EmploymentType, validation.Required, validation.Length(1, 48)),
 	)
