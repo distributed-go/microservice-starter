@@ -7,7 +7,7 @@
     "website": {
         "domain_name": "https://recruiter.jobbox.ai",
         "auth_login_url": "/start-session",
-        "product_name": "Jobbox"
+        "product_name": "Job Box"
     },
 
     "host": {
