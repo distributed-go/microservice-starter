@@ -3,7 +3,7 @@ package authemail
 import (
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/email/mailer"
+	"github.com/distributed-go/microservice-starter/email/mailer"
 )
 
 // AuthEmail interface

@@ -3,8 +3,8 @@ package renderers
 import (
 	"net/http"
 
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/errorinterface"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/errorinterface"
 )
 
 // ErrorInvalidRequest returns status 422 Unprocessable Entity including error message.

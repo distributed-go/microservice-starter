@@ -3,8 +3,8 @@ package dbmodels
 import (
 	"time"
 
+	"github.com/distributed-go/microservice-starter/models/authmodel"
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

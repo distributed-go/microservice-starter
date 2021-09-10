@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
-	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
+	"github.com/distributed-go/microservice-starter/models/authmodel"
+	"github.com/distributed-go/microservice-starter/models/recruitermodel"
 )
 
 // Middlewares interfaces

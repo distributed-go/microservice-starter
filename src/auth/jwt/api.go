@@ -3,7 +3,7 @@ package jwt
 import (
 	"net/http"
 
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
+	"github.com/distributed-go/microservice-starter/models/authmodel"
 )
 
 // TokenAuth interface

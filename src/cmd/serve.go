@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/jobbox-tech/recruiter-api/web/server"
+	"github.com/distributed-go/microservice-starter/web/server"
 	"github.com/spf13/cobra"
 )
 

@@ -3,10 +3,10 @@ package authservice
 import (
 	"net/http"
 
+	"github.com/distributed-go/microservice-starter/models/authmodel"
+	"github.com/distributed-go/microservice-starter/web/renderers"
 	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
-	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
 // @Summary Logout

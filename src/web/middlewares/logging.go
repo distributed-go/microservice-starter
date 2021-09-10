@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/distributed-go/microservice-starter/logging"
 	"github.com/go-chi/chi/middleware"
-	"github.com/jobbox-tech/recruiter-api/logging"
 	"github.com/sirupsen/logrus"
 )
 

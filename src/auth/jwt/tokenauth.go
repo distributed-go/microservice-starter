@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/distributed-go/microservice-starter/models/authmodel"
 	"github.com/go-chi/jwtauth"
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
 	"github.com/spf13/viper"
 )
 

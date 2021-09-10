@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/dal/recruiterdal"
-	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
+	"github.com/distributed-go/microservice-starter/dal/recruiterdal"
+	"github.com/distributed-go/microservice-starter/models/recruitermodel"
 
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
+	"github.com/distributed-go/microservice-starter/web/renderers"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
-	"github.com/jobbox-tech/recruiter-api/web/renderers"
 
-	"github.com/jobbox-tech/recruiter-api/logging"
+	"github.com/distributed-go/microservice-starter/logging"
 )
 
 type recruiterservice struct {

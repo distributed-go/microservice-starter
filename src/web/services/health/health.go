@@ -6,12 +6,12 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/database/connection"
+	"github.com/distributed-go/microservice-starter/database/connection"
 
+	"github.com/distributed-go/microservice-starter/logging"
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/healthinterface"
+	_ "github.com/distributed-go/microservice-starter/web/renderers" // swag
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
-	_ "github.com/jobbox-tech/recruiter-api/web/renderers" // swag
 	"github.com/spf13/viper"
 )
 

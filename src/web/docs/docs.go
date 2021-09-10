@@ -20,8 +20,8 @@ var doc = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "API Support",
-            "url": "http://jobbox.ai",
-            "email": "hello@jobbox.ai"
+            "url": "http://xyz.ai",
+            "email": "hello@xyz.ai"
         },
         "license": {
             "name": "Apache 2.0",
@@ -326,7 +326,9 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -379,7 +381,9 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -424,7 +428,9 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -465,7 +471,9 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -510,7 +518,9 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -570,7 +580,6 @@ var doc = `{
             "type": "object",
             "properties": {
                 "company": {
-                    "type": "object",
                     "$ref": "#/definitions/authinterface.Company"
                 },
                 "designation": {
@@ -686,10 +695,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "createdTimestampUTC": {
                     "type": "string"
@@ -698,6 +704,12 @@ var doc = `{
                     "type": "boolean"
                 },
                 "employmentType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "function": {
                     "type": "string"
                 },
                 "goodToHaveSkills": {
@@ -721,6 +733,12 @@ var doc = `{
                         "type": "string"
                     }
                 },
+                "maxExperience": {
+                    "type": "integer"
+                },
+                "minExperience": {
+                    "type": "integer"
+                },
                 "mustHaveSkills": {
                     "type": "array",
                     "items": {
@@ -733,12 +751,6 @@ var doc = `{
                 "recruiterID": {
                     "type": "string"
                 },
-                "remoteCountries": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "remoteTimezone": {
                     "type": "string"
                 },
@@ -746,7 +758,8 @@ var doc = `{
                     "type": "string"
                 },
                 "summary": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "title": {
                     "type": "string"
@@ -756,9 +769,6 @@ var doc = `{
                 },
                 "visaSponsorShip": {
                     "type": "boolean"
-                },
-                "yearsOfExperience": {
-                    "type": "string"
                 }
             }
         },
@@ -766,10 +776,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "createdTimestampUTC": {
                     "type": "string"
@@ -778,6 +785,12 @@ var doc = `{
                     "type": "boolean"
                 },
                 "employmentType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "function": {
                     "type": "string"
                 },
                 "goodToHaveSkills": {
@@ -801,6 +814,12 @@ var doc = `{
                         "type": "string"
                     }
                 },
+                "maxExperience": {
+                    "type": "integer"
+                },
+                "minExperience": {
+                    "type": "integer"
+                },
                 "mustHaveSkills": {
                     "type": "array",
                     "items": {
@@ -813,12 +832,6 @@ var doc = `{
                 "recruiterID": {
                     "type": "string"
                 },
-                "remoteCountries": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "remoteTimezone": {
                     "type": "string"
                 },
@@ -826,7 +839,8 @@ var doc = `{
                     "type": "string"
                 },
                 "summary": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "title": {
                     "type": "string"
@@ -836,9 +850,6 @@ var doc = `{
                 },
                 "visaSponsorShip": {
                     "type": "boolean"
-                },
-                "yearsOfExperience": {
-                    "type": "string"
                 }
             }
         }

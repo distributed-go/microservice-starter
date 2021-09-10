@@ -4,14 +4,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
+	"github.com/distributed-go/microservice-starter/models/authmodel"
+	"github.com/distributed-go/microservice-starter/models/recruitermodel"
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/authinterface"
+	"github.com/distributed-go/microservice-starter/web/renderers"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/models/authmodel"
-	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/authinterface"
-	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
 // @Summary Sign up with email

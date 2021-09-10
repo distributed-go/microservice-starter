@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jobbox-tech/recruiter-api/models/recruitermodel"
+	"github.com/distributed-go/microservice-starter/models/recruitermodel"
 )
 
 // AppClaims represent the claims parsed from JWT access token.

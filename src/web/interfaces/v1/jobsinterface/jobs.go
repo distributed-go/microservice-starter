@@ -3,8 +3,8 @@ package jobsinterface
 import (
 	"net/http"
 
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
 )
 
 // JobRequest ...

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jobbox-tech/recruiter-api/cmd"
+	"github.com/distributed-go/microservice-starter/cmd"
 )
 
 // @title Recruiter API Documentation
@@ -9,8 +9,8 @@ import (
 // @description Recruiter API Documentation
 
 // @contact.name API Support
-// @contact.url http://jobbox.ai
-// @contact.email hello@jobbox.ai
+// @contact.url http://xyz.ai
+// @contact.email hello@xyz.ai
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html

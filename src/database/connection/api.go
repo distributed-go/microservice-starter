@@ -1,7 +1,7 @@
 package connection
 
 import (
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/healthinterface"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/healthinterface"
+	"github.com/distributed-go/microservice-starter/logging"
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/healthinterface"
 
 	"github.com/google/uuid"
 	"github.com/spf13/viper"

@@ -13,8 +13,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	_ "github.com/distributed-go/microservice-starter/database/migrations" // import migrations
 	migrate "github.com/jobbox-tech/mongomigrate"
-	_ "github.com/jobbox-tech/recruiter-api/database/migrations" // import migrations
 	"github.com/spf13/cobra"
 )
 

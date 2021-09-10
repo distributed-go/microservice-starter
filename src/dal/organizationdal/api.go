@@ -1,7 +1,7 @@
 package organizationdal
 
 import (
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/distributed-go/microservice-starter/web/interfaces/v1/jobsinterface"
+	"github.com/distributed-go/microservice-starter/web/renderers"
 	"github.com/go-chi/render"
-	"github.com/jobbox-tech/recruiter-api/web/interfaces/v1/jobsinterface"
-	"github.com/jobbox-tech/recruiter-api/web/renderers"
 )
 
 // @Summary Post a new Job

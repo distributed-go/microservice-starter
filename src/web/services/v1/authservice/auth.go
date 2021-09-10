@@ -1,12 +1,12 @@
 package authservice
 
 import (
-	"github.com/jobbox-tech/recruiter-api/auth/jwt"
-	"github.com/jobbox-tech/recruiter-api/dal/organizationdal"
-	"github.com/jobbox-tech/recruiter-api/dal/recruiterdal"
-	"github.com/jobbox-tech/recruiter-api/dal/tokendal"
-	"github.com/jobbox-tech/recruiter-api/email/authemail"
-	"github.com/jobbox-tech/recruiter-api/logging"
+	"github.com/distributed-go/microservice-starter/auth/jwt"
+	"github.com/distributed-go/microservice-starter/dal/organizationdal"
+	"github.com/distributed-go/microservice-starter/dal/recruiterdal"
+	"github.com/distributed-go/microservice-starter/dal/tokendal"
+	"github.com/distributed-go/microservice-starter/email/authemail"
+	"github.com/distributed-go/microservice-starter/logging"
 )
 
 type authservice struct {

@@ -1,12 +1,12 @@
 package jobsservice
 
 import (
-	"github.com/jobbox-tech/recruiter-api/dal/jobsdal"
-	"github.com/jobbox-tech/recruiter-api/dal/organizationdal"
-	"github.com/jobbox-tech/recruiter-api/dal/recruiterdal"
-	"github.com/jobbox-tech/recruiter-api/dal/tokendal"
-	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/web/middlewares"
+	"github.com/distributed-go/microservice-starter/dal/jobsdal"
+	"github.com/distributed-go/microservice-starter/dal/organizationdal"
+	"github.com/distributed-go/microservice-starter/dal/recruiterdal"
+	"github.com/distributed-go/microservice-starter/dal/tokendal"
+	"github.com/distributed-go/microservice-starter/logging"
+	"github.com/distributed-go/microservice-starter/web/middlewares"
 )
 
 type jobsservice struct {

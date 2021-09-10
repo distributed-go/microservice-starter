@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/distributed-go/microservice-starter/logging"
+	"github.com/distributed-go/microservice-starter/web/router"
 	"github.com/google/uuid"
-	"github.com/jobbox-tech/recruiter-api/logging"
-	"github.com/jobbox-tech/recruiter-api/web/router"
 	"github.com/spf13/viper"
 )
 

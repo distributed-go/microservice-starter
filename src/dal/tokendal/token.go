@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jobbox-tech/recruiter-api/database/connection"
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
+	"github.com/distributed-go/microservice-starter/database/connection"
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"gopkg.in/mgo.v2/bson"

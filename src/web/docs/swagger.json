@@ -5,8 +5,8 @@
         "title": "Recruiter API Documentation",
         "contact": {
             "name": "API Support",
-            "url": "http://jobbox.ai",
-            "email": "hello@jobbox.ai"
+            "url": "http://xyz.ai",
+            "email": "hello@xyz.ai"
         },
         "license": {
             "name": "Apache 2.0",
@@ -311,7 +311,9 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -364,7 +366,9 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -409,7 +413,9 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -450,7 +456,9 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -495,7 +503,9 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": ""
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -555,7 +565,6 @@
             "type": "object",
             "properties": {
                 "company": {
-                    "type": "object",
                     "$ref": "#/definitions/authinterface.Company"
                 },
                 "designation": {
@@ -671,10 +680,7 @@
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "createdTimestampUTC": {
                     "type": "string"
@@ -683,6 +689,12 @@
                     "type": "boolean"
                 },
                 "employmentType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "function": {
                     "type": "string"
                 },
                 "goodToHaveSkills": {
@@ -706,6 +718,12 @@
                         "type": "string"
                     }
                 },
+                "maxExperience": {
+                    "type": "integer"
+                },
+                "minExperience": {
+                    "type": "integer"
+                },
                 "mustHaveSkills": {
                     "type": "array",
                     "items": {
@@ -718,12 +736,6 @@
                 "recruiterID": {
                     "type": "string"
                 },
-                "remoteCountries": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "remoteTimezone": {
                     "type": "string"
                 },
@@ -731,7 +743,8 @@
                     "type": "string"
                 },
                 "summary": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "title": {
                     "type": "string"
@@ -741,9 +754,6 @@
                 },
                 "visaSponsorShip": {
                     "type": "boolean"
-                },
-                "yearsOfExperience": {
-                    "type": "string"
                 }
             }
         },
@@ -751,10 +761,7 @@
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "createdTimestampUTC": {
                     "type": "string"
@@ -763,6 +770,12 @@
                     "type": "boolean"
                 },
                 "employmentType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "function": {
                     "type": "string"
                 },
                 "goodToHaveSkills": {
@@ -786,6 +799,12 @@
                         "type": "string"
                     }
                 },
+                "maxExperience": {
+                    "type": "integer"
+                },
+                "minExperience": {
+                    "type": "integer"
+                },
                 "mustHaveSkills": {
                     "type": "array",
                     "items": {
@@ -798,12 +817,6 @@
                 "recruiterID": {
                     "type": "string"
                 },
-                "remoteCountries": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "remoteTimezone": {
                     "type": "string"
                 },
@@ -811,7 +824,8 @@
                     "type": "string"
                 },
                 "summary": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "title": {
                     "type": "string"
@@ -821,9 +835,6 @@
                 },
                 "visaSponsorShip": {
                     "type": "boolean"
-                },
-                "yearsOfExperience": {
-                    "type": "string"
                 }
             }
         }

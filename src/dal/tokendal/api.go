@@ -1,7 +1,7 @@
 package tokendal
 
 import (
-	"github.com/jobbox-tech/recruiter-api/database/dbmodels"
+	"github.com/distributed-go/microservice-starter/database/dbmodels"
 )
 
 type TokenDal interface {
